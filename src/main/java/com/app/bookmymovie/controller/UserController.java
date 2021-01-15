@@ -30,9 +30,9 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 	
-	@PutMapping
-	public ResponseEntity<?> updateUser(@RequestBody User user) {
-		user = userService.updateUser(user);
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable int id) {
+		user = userService.updateUser(user,id);
 		if(user == null)
 			return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(user,HttpStatus.OK);
