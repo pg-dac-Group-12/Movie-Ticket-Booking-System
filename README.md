@@ -1,3 +1,3 @@
 # Movie-Ticket-Booking-System
 
-Simple Movie ticket booking System ~using microservices~ 
+Simple Movie ticket booking System 
