@@ -1,13 +1,42 @@
 package com.app.bookmymovie.service;
 
-import com.app.bookmymovie.pojo.User;
+import javax.transaction.Transactional;
 
-public class UserService {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.app.bookmymovie.pojo.User;
+import com.app.bookmymovie.repository.UserRepository;
+
+@Service
+@Transactional
+public class UserService implements IUserService {
+	
+	@Autowired
+	UserRepository userRepo ;
+	
 	public boolean changePassword(User user , String oldPassword , String newPassword) {
 		if(oldPassword.equals(user.getPassword())) {
 			user.setPassword(newPassword);
+			userRepo.save(user);
 			return true ;
 		}
 		return false ;
+	}
+
+	@Override
+	public User createUser(User user) {
+		return userRepo.save(user);
+	}
+
+	@Override
+	public User updateUser(User user) {
+		return userRepo.save(user);
+		
+	}
+
+	@Override
+	public void deleteUser(int id) {
+		userRepo.deleteById(id);
 	}
 }
