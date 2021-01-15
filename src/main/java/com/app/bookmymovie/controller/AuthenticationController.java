@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,10 +20,10 @@ public class AuthenticationController {
 	@Autowired
 	IAuthenticationService authenticationService ;
 	@PostMapping("/login")
-	public ResponseEntity<?> authenticateUser(@RequestParam String email,@RequestParam String password , HttpSession session)
+	public ResponseEntity<?> authenticateUser(@RequestBody User userReq, HttpSession session)
 	{
 		System.out.println("Authentication Controller : /login");
-		Optional<User> user = authenticationService.authenticateUser(email, password);
+		Optional<User> user = authenticationService.authenticateUser(userReq.getEmail(), userReq.getPassword());
 		if (!user.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
