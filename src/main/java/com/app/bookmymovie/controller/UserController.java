@@ -25,7 +25,7 @@ public class UserController {
 	IUserService userService ;
 	
 	@PostMapping 
-	@Authorize("user")
+	/* @Authorize("user") */
 	public ResponseEntity<?> createUser(@RequestBody User user ) {
 		user = userService.createUser(user);
 		System.out.println("In User");
@@ -45,16 +45,6 @@ public class UserController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable int id) {
 		userService.deleteUser(id);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@PostMapping("/password/change")
-	public ResponseEntity<?> changePassword(@RequestParam String oldPassword , @RequestParam String newPassword , HttpSession session) {
-		System.out.println("Auth Controller : /password/change");
-		boolean passwordChanged = userService.changePassword((User) session.getAttribute("user"), oldPassword, newPassword);
-		if(!passwordChanged)
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
