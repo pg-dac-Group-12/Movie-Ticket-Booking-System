@@ -28,6 +28,7 @@ public class AuthenticationController {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		session.setAttribute("user", user.get());
+		session.setAttribute("role", "user");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

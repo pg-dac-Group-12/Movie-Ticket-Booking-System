@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.bookmymovie.annotation.Authorize;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.service.IUserService;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -23,8 +25,10 @@ public class UserController {
 	IUserService userService ;
 	
 	@PostMapping 
+	@Authorize("user")
 	public ResponseEntity<?> createUser(@RequestBody User user ) {
 		user = userService.createUser(user);
+		System.out.println("In User");
 		if(user == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
