@@ -29,5 +29,25 @@ public class AuthenticationService implements IAuthenticationService {
 		Optional<Theatre> theatreAdmin = theatreRepo.findByEmailAndPassword(email, password);
 		return theatreAdmin;
 	}
+
+	@Override
+	public boolean changePassword(User user, String oldPassword, String newPassword) {
+		if(oldPassword.equals(user.getPassword())) {
+			user.setPassword(newPassword);
+			userRepo.save(user);
+			return true ;
+		}
+		return false ;
+	}
+
+	@Override
+	public boolean changePassword(Theatre theatreAdmin, String oldPassword, String newPassword) {
+		if(oldPassword.equals(theatreAdmin.getPassword())) {
+			theatreAdmin.setPassword(newPassword);
+			theatreRepo.save(theatreAdmin);
+			return true ;
+		}
+		return false ;
+	}
 	
 }

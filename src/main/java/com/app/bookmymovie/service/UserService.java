@@ -16,15 +16,6 @@ public class UserService implements IUserService {
 	
 	@Autowired
 	UserRepository userRepo ;
-	
-	public boolean changePassword(User user , String oldPassword , String newPassword) {
-		if(oldPassword.equals(user.getPassword())) {
-			user.setPassword(newPassword);
-			userRepo.save(user);
-			return true ;
-		}
-		return false ;
-	}
 
 	@Override
 	public User createUser(User user) {
