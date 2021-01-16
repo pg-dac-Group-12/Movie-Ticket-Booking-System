@@ -1,5 +1,7 @@
 package com.app.bookmymovie.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.bookmymovie.pojo.Audi;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.service.ITheatreService;
 
@@ -51,4 +54,41 @@ public class TheatreController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@GetMapping("/{id}/audis")
+	public ResponseEntity<?> getAllAudis(@PathVariable int theatreID){
+		List<Audi> audis = theatreService.getAudis(theatreID);
+		if(audis == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(audis, HttpStatus.FOUND);
+	}
+	
+	@GetMapping("/{id}/audi/{id}")
+	public ResponseEntity<?> getAudi(@PathVariable int theatreID, @PathVariable int audiID){
+		Audi audi = theatreService.getAudi(theatreID, audiID);
+		if(audi == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(audi, HttpStatus.FOUND);
+	}
+	
+	@PostMapping("/{id}/audi")
+	public ResponseEntity<?> createAudi(@PathVariable int theatreID, @RequestBody Audi audi){
+		Audi createdAudi = theatreService.createAudi(theatreID, audi);
+		if(createdAudi == null)
+			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+		return new ResponseEntity<>(createdAudi, HttpStatus.CREATED);
+	}
+	
+	@PutMapping("{id}/audi/{id}")
+	public ResponseEntity<?> updateAudi(@PathVariable int theatreID, @PathVariable int audiID, @RequestBody Audi audi){
+		Audi updatedAudi = theatreService.updateAudi(theatreID, audiID, audi);
+		if(updatedAudi == null)
+			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+		return new ResponseEntity<>(updatedAudi, HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("{id}/audi/{id}")
+	public ResponseEntity<?> deleteAudi(@PathVariable int theatreID, @PathVariable int audiID){
+		theatreService.deleteAudi(theatreID, audiID);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

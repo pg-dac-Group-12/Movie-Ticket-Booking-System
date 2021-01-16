@@ -17,18 +17,29 @@ import javax.persistence.Table;
 public class Audi {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private Integer number;
 	private byte[] seatMap;
 	private int totalSeats;
 	@ManyToOne
 	@JoinColumn(name="theatre_id")
 	private Theatre theatre;
+
 	public Audi(Integer number, byte[] seatMap, int totalSeats) {
 		super();
 		this.number = number;
 		this.seatMap = seatMap;
 		this.totalSeats = totalSeats;
 	}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getNumber() {
 		return number;
 	}
@@ -46,6 +57,13 @@ public class Audi {
 	}
 	public void setTotalSeats(int totalSeats) {
 		this.totalSeats = totalSeats;
+	}
+	
+	public Theatre getTheatre() {
+		return theatre;
+	}
+	public void setTheatre(Theatre theatre) {
+		this.theatre = theatre;
 	}
 	@Override
 	public String toString() {
