@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.bookmymovie.pojo.Movie;
 import com.app.bookmymovie.service.IMovieService;
 
-
 @RestController
 @RequestMapping("/movie")
 public class MovieController {
@@ -33,10 +32,10 @@ public class MovieController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(movie, HttpStatus.CREATED);
 	}
-	
-	@PutMapping
-	public ResponseEntity<?> updateMovie (@RequestBody Movie movie) {
-		movie = movieService.updateMovie(movie);
+
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateMovie(@PathVariable int id, @RequestBody Movie movie) {
+		movie = movieService.updateMovie(id,movie);
 		if(movie == null)
 			return new ResponseEntity<>(movie, HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(movie,HttpStatus.OK);
