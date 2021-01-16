@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.service.IAuthenticationService;
 
@@ -20,15 +20,22 @@ public class AuthenticationController {
 	@Autowired
 	IAuthenticationService authenticationService ;
 	@PostMapping("/login")
-	public ResponseEntity<?> authenticateUser(@RequestBody User userReq, HttpSession session)
+	public ResponseEntity<?> authenticateUser(@RequestParam String email, @RequestParam String password , @RequestParam(defaultValue = "false") boolean isTheatreAdmin, HttpSession session)
 	{
 		System.out.println("Authentication Controller : /login");
-		Optional<User> user = authenticationService.authenticateUser(userReq.getEmail(), userReq.getPassword());
-		if (!user.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		if(isTheatreAdmin) {
+			Optional<Theatre> theatreAdmin = authenticationService.authenticateTheatreAdmin(email, password);
+			session.setAttribute("role", "TheatreAdmin");
+			if(!theatreAdmin.isPresent()) 
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			session.setAttribute("user", theatreAdmin.get());
+		} else {
+			Optional<User> user = authenticationService.authenticateUser(email, password);
+			session.setAttribute("role", "user");	
+			if (!user.isPresent())
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			session.setAttribute("user", user.get());
 		}
-		session.setAttribute("user", user.get());
-		session.setAttribute("role", "user");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
