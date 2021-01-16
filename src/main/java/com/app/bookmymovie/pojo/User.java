@@ -1,32 +1,41 @@
 package com.app.bookmymovie.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "user_tbl")
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id ;
-	String name ;
-	String email; 
-	String password ;
-	String phone_no ;
+	private Integer id ;
+	private String name ;
+	private String email; 
+	private String password ;
+	private String phone_no ;
+	@OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+	private List<Ticket> tickets=new ArrayList<>();
+	
 	public User() {
 		super();
 	}
-	public User(int id, String name, String email, String password, String phone_no) {
+	public User( String name, String email, String password, String phone_no) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.phone_no = phone_no;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -55,6 +64,22 @@ public class User {
 	}
 	public void setPhone_no(String phone_no) {
 		this.phone_no = phone_no;
+	}
+	public List<Ticket> getTickes() {
+		return tickets;
+	}
+	public void setTickets(List<Ticket> ticket) {
+		this.tickets = ticket;
+	}
+	
+	//Helper methods to add and remove ticket
+	public void addTicket(Ticket ticket) {
+		tickets.add(ticket);
+		ticket.setUser(this);
+	}
+	public void removeTicket(Ticket ticket) {
+		tickets.remove(ticket);
+		ticket.setUser(null);
 	}
 	@Override
 	public String toString() {
