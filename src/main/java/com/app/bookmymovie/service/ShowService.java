@@ -1,5 +1,6 @@
 package com.app.bookmymovie.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -18,8 +19,8 @@ public class ShowService implements IShowService {
 	ShowsRepository showsRepo ;
 	
 	@Override
-	public Optional<Shows> getAllShowsByMovieId(int id) {
-		return showsRepo.findAllByMovieId(id);
+	public Optional<Shows> getAllShowsByMovieIdAndDate(int id, LocalDate date) {
+		return showsRepo.findAllByMovieIdAndDate(id, date);
 	}
 
 	@Override

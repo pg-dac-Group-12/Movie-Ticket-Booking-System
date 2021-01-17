@@ -1,5 +1,7 @@
 package com.app.bookmymovie.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +25,11 @@ public class ShowsController {
 	IShowService showService ;
 	
 	@GetMapping
-	public ResponseEntity<?> getAllShowsByMovieId(@RequestParam int movieId) {
-		if(!showService.getAllShowsByMovieId(movieId).isPresent())
+	public ResponseEntity<?> getAllShowsByMovieIdAndDate(@RequestParam int movieId, @RequestParam LocalDate date) {
+		if(!showService.getAllShowsByMovieIdAndDate(movieId,date).isPresent())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
-		return new ResponseEntity<>(showService.getAllShowsByMovieId(movieId).get(), HttpStatus.OK);
+		return new ResponseEntity<>(showService.getAllShowsByMovieIdAndDate(movieId,date).get(), HttpStatus.OK);
 	}
 	@GetMapping
 	public ResponseEntity<?> getShowById(@PathVariable int id) {
