@@ -9,5 +9,5 @@ import com.app.bookmymovie.pojo.Shows;
 
 public interface ShowsRepository extends JpaRepository<Shows,Integer>{
 	Optional<Shows> findAllByMovieIdAndDate(int id, LocalDate date);
-	
+	Optional<Shows> findAllByTheatreId(int theatreId);
 }

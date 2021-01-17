@@ -7,7 +7,8 @@ import com.app.bookmymovie.pojo.Shows;
 
 public interface IShowService {
 	Optional<Shows> getAllShowsByMovieIdAndDate(int id, LocalDate date);
-	Optional<Shows> getShowById(int id);
+	Optional<Shows> getShowById(int id); // TODO this should return seatmap
+	Optional<Shows> getAllShowsByTheatreId(int theatreId);
 	Shows createShow(Shows show);
 	Shows updateShow(Shows show, int id);
 	void deleteShow(int id);

@@ -31,14 +31,20 @@ public class ShowsController {
 		
 		return new ResponseEntity<>(showService.getAllShowsByMovieIdAndDate(movieId,date).get(), HttpStatus.OK);
 	}
-	@GetMapping
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getShowById(@PathVariable int id) {
 		if(!showService.getShowById(id).isPresent())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 		return new ResponseEntity<>(showService.getShowById(id).get(), HttpStatus.OK);
 	}
-	
+	@GetMapping
+	public ResponseEntity<?> getAllShowsByTheatreId(@RequestParam int theatreId) {
+		if(!showService.getAllShowsByTheatreId(theatreId).isPresent())
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
+		return new ResponseEntity<>(showService.getAllShowsByTheatreId(theatreId).get(), HttpStatus.OK);
+	}
 	@PostMapping
 	public ResponseEntity<?> createShow(@RequestBody Shows show) {
 		show = showService.createShow(show);

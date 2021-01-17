@@ -44,4 +44,9 @@ public class ShowService implements IShowService {
 		showsRepo.deleteById(id);
 	}
 
+	@Override
+	public Optional<Shows> getAllShowsByTheatreId(int theatreId) {
+		return showsRepo.findAllByTheatreId(theatreId);
+	}
+
 }
