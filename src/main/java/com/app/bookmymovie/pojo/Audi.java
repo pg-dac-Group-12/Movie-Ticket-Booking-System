@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "audi_tbl")
 public class Audi {
@@ -23,6 +25,10 @@ public class Audi {
 	@ManyToOne
 	@JoinColumn(name="theatre_id")
 	private Theatre theatre;
+	
+	public Audi() {
+		// TODO Auto-generated constructor stub
+	}
 	public Audi(Integer number, byte[] seatMap, int totalSeats) {
 		super();
 		this.number = number;

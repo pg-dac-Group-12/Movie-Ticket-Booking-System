@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "trasaction_tbl")
 public class Transaction {
@@ -20,6 +22,7 @@ public class Transaction {
 	private double amount;
 	private LocalDateTime time; 
 	@OneToOne(mappedBy = "transaction")
+	@JsonIgnoreProperties("transaction")
 	private Ticket ticket;
 	PaymentMode paymentMode;
 	

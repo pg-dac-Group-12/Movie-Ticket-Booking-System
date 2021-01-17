@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.pojo.Ticket;
@@ -13,6 +15,8 @@ import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.repository.ShowsRepository;
 import com.app.bookmymovie.repository.TicketRepository;
 
+@Service
+@Transactional
 public class TicketService implements ITicketService{
 	@Autowired
 	TicketRepository ticketRepo ;
@@ -38,22 +42,22 @@ public class TicketService implements ITicketService{
 		LocalTime ticketTime = ticket.getTime();
 		if(ticketDate.equals(LocalDate.now()) && ticketTime.plusHours(4).isAfter(LocalTime.now())) 
 			return false;
-		ticketRepo.delete(ticket);
-		return paymentService.refundPayment(ticket.getTransaction());
+		ticketRepo.deleteById(5);
+		return paymentService.refundPayment(ticket.getTransaction()); 
 	}
 
 	@Override
-	public Ticket createTicket(int showId , int[] seats, User user ) {
+	public Ticket createTicket(int showId , Integer[] seats, User user ) {
 		Ticket ticket = new Ticket() ;
 		Shows show = showRepo.findById(showId).get();
 		ticket.addShow(show);
 		double amount = seats.length * show.getPrice();
 		ticket.setAmount(amount);
 		user.addTicket(ticket);
-		Transaction transaction = paymentService.initiatePayment( amount , user);
-		ticket.setTransaction(transaction);
-		ticket.setTime(LocalTime.now());
-		ticket.setDate(LocalDate.now());
+		/* Transaction transaction = */ paymentService.initiatePayment( amount , user);
+		//ticket.setTransaction(transaction);
+		ticket.setTime(show.getTime());
+		ticket.setDate(show.getDate());
 		ticket.setSeats(seats);
 		return ticketRepo.save(ticket) ;
 	}

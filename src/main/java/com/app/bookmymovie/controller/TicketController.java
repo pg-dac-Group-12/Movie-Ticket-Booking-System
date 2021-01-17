@@ -29,15 +29,15 @@ public class TicketController {
 		
 		return new ResponseEntity<>(ticketService.getAllTicketsByUserId(userId).get(), HttpStatus.OK);
 	}
-	@GetMapping
-	public ResponseEntity<?> getMovieById(@PathVariable int id) {
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getTicketById(@PathVariable int id) {
 		if(!ticketService.getTicketById(id).isPresent())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 		return new ResponseEntity<>(ticketService.getTicketById(id).get(), HttpStatus.OK);
 	}
 	
-	@PostMapping
+	@PostMapping("/cancel")
 	public ResponseEntity<?> cancelTicket(@RequestBody Ticket ticket) {
 		if(!ticketService.cancelTicket(ticket))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -45,7 +45,7 @@ public class TicketController {
 	}
 	
 	@PostMapping("/{showId}")
-	public ResponseEntity<?> createTicket(@RequestBody int[] seats , @PathVariable int showId , HttpSession session) {
+	public ResponseEntity<?> createTicket(@RequestParam Integer[] seats , @PathVariable int showId , HttpSession session) {
 		Ticket ticket = ticketService.createTicket(showId, seats, (User)session.getAttribute("user")) ;
 		if(ticket == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

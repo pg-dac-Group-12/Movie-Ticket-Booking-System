@@ -32,6 +32,7 @@ public class Movie {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public Movie(String title, String director, String[] cast, long duration, double rating, byte[] icon,
 			int totalShows) {
 		super();

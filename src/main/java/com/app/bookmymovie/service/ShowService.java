@@ -8,7 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.bookmymovie.pojo.Audi;
+import com.app.bookmymovie.pojo.Movie;
 import com.app.bookmymovie.pojo.Shows;
+import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.Ticket;
 import com.app.bookmymovie.repository.ShowsRepository;
 
@@ -33,8 +36,18 @@ public class ShowService implements IShowService {
 	}
 
 	@Override
-	public Shows createShow(Shows show) {
-		 return showsRepo.save(show);
+	public Shows createShow(Shows show, int theatreID, int audiID,  int movieID) {
+		Audi audi = new Audi();
+		audi.setNumber(audiID);
+		Theatre theatre = new Theatre();
+		theatre.setId(theatreID);
+		Movie movie = new Movie();
+		movie.setId(movieID);
+		
+		show.setAudi(audi);
+		show.setTheatre(theatre);
+		show.setMovie(movie);
+		return showsRepo.save(show);
 	}
 
 	@Override
@@ -50,6 +63,7 @@ public class ShowService implements IShowService {
 
 	@Override
 	public Optional<Shows> getAllShowsByTheatreId(int theatreId) {
+		
 		return showsRepo.findAllByTheatreId(theatreId);
 	}
 
@@ -62,7 +76,4 @@ public class ShowService implements IShowService {
 		showsRepo.delete(show);
 		return true;
 	}
-	
-	
-
 }

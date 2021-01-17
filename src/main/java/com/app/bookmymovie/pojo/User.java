@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "user_tbl")
@@ -22,7 +25,8 @@ public class User {
 	private String email; 
 	private String password ;
 	private String phone_no ;
-	@OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="user",fetch = FetchType.EAGER)
+	@JsonIgnoreProperties("user")
 	private List<Ticket> tickets=new ArrayList<>();
 	
 	public User() {
