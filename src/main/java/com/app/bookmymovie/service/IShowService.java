@@ -12,5 +12,6 @@ public interface IShowService {
 	Shows createShow(Shows show);
 	Shows updateShow(Shows show, int id);
 	void deleteShow(int id);
+	boolean cancelShow(Shows show);
 	//TODO updateSeatmap
 }

@@ -66,4 +66,11 @@ public class ShowsController {
 		showService.deleteShow(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@PostMapping("/cancel")
+	public ResponseEntity<?> cancelShow(@RequestBody Shows show) {
+		if(!showService.cancelShow(show))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<> (HttpStatus.OK);
+	}
 }
