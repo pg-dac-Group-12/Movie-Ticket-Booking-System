@@ -38,16 +38,16 @@ public class ShowsController {
 		
 		return new ResponseEntity<>(showService.getShowById(id).get(), HttpStatus.OK);
 	}
-	@GetMapping
-	public ResponseEntity<?> getAllShowsByTheatreId(@RequestParam int theatreId) {
-		if(!showService.getAllShowsByTheatreId(theatreId).isPresent())
+	@GetMapping("/theatre/{theatreID}")
+	public ResponseEntity<?> getAllShowsByTheatreId(@PathVariable int theatreID) {
+		if(!showService.getAllShowsByTheatreId(theatreID).isPresent())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
-		return new ResponseEntity<>(showService.getAllShowsByTheatreId(theatreId).get(), HttpStatus.OK);
+		return new ResponseEntity<>(showService.getAllShowsByTheatreId(theatreID).get(), HttpStatus.OK);
 	}
-	@PostMapping
-	public ResponseEntity<?> createShow(@RequestBody Shows show) {
-		show = showService.createShow(show);
+	@PostMapping()
+	public ResponseEntity<?> createShow(@RequestBody Shows show,@RequestParam int theatreID, @RequestParam int audiID, @RequestParam int movieID) {
+		show = showService.createShow(show, theatreID, audiID, movieID);
 		if(show == null ) 
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(show,HttpStatus.CREATED);

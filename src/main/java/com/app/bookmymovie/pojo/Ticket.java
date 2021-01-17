@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 
@@ -26,20 +32,23 @@ public class Ticket {
 	private Integer id ;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "show_id")
+	@JsonIgnoreProperties("tickets")
 	private Shows show;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userID")
+	@JsonIgnoreProperties("tickes")
 	private User user;
-	private int[] seats;
+	private Integer[] seats;
 	private double amount;
 	private LocalTime time ;
 	private LocalDate date ;
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="transaction_id")
+	@JsonIgnoreProperties("ticket")
 	private Transaction transaction;
 
-	
-	public Ticket( Shows show, User user, int[] seats, double amount,LocalDate date , LocalTime time , Transaction transaction) {
+	public Ticket() {};
+	public Ticket( Shows show, User user, Integer[] seats, double amount,LocalDate date , LocalTime time , Transaction transaction) {
 		super();
 		this.show = show;
 		this.user = user;
@@ -49,11 +58,6 @@ public class Ticket {
 		this.time = time ;
 		this.transaction = transaction;
 	}
-
-
-	public Ticket() {
-	}
-
 
 	public Integer getId() {
 		return id;
@@ -103,12 +107,12 @@ public class Ticket {
 		this.date = date;
 	}
 
-	public int[] getSeats() {
+	public Integer[] getSeats() {
 		return seats;
 	}
 
 
-	public void setSeats(int[] seats) {
+	public void setSeats(Integer[] seats) {
 		this.seats = seats;
 	}
 

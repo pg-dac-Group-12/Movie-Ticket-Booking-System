@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "shows_tbl")
@@ -31,13 +34,16 @@ public class Shows {
 	private Movie movie;
 	@ManyToOne
 	@JoinColumn(name = "theatre_id")
-	private Theatre threatre;
+	private Theatre theatre;
 	@OneToMany(mappedBy = "show")
+	@JsonIgnoreProperties("show")
 	private List<Ticket> tickets = new ArrayList<>() ;
 	private LocalTime time;
 	private LocalDate date ;
 	private double price;
 	private byte[] seatMap;
+	
+	public Shows() {};
 	public Shows(Audi audi, Movie movie, LocalTime time, double price, byte[] seatMap , LocalDate date) {
 		super();
 		this.audi = audi;
@@ -53,11 +59,11 @@ public class Shows {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Theatre getThreatre() {
-		return threatre;
+	public Theatre getTheatre() {
+		return theatre;
 	}
-	public void setThreatre(Theatre threatre) {
-		this.threatre = threatre;
+	public void setTheatre(Theatre theatre) {
+		this.theatre = theatre;
 	}
 	public List<Ticket> getTickets() {
 		return tickets;

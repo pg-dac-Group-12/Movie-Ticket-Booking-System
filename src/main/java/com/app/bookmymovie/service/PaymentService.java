@@ -18,8 +18,9 @@ public class PaymentService implements IPaymentService {
 	
 	@Override
 	public boolean refundPayment(Transaction transaction) {
-		if(transaction == null)
-			return false ;
+		/*
+		 * if(transaction == null) return false ;
+		 */
 		//TODO Payment Gateway Code 
 		System.out.println("Refund has been Initiated");
 		return true;

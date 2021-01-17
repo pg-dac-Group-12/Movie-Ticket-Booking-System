@@ -31,8 +31,8 @@ public class Movie {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Movie(String title, String director, String[] cast, long duration, double rating, String icon,
-			int totalShows) {
+
+	public Movie(String title, String director, String[] cast, long duration, double rating, String icon, int totalShows) {
 		super();
 		this.title = title;
 		this.director = director;
@@ -103,9 +103,4 @@ public class Movie {
 				+ ", duration=" + duration + ", rating=" + rating + ", icon=" + icon + ", totalShows="
 				+ totalShows + "]";
 	}
-
-	
-
-	
-
 }
