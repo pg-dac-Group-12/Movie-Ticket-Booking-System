@@ -3,14 +3,15 @@ package com.app.bookmymovie.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "theatre_tbl")
@@ -24,8 +25,9 @@ public class Theatre {
 	private String name;
 	private String city;
 	private String location;
-	@OneToMany(mappedBy = "theatre", fetch = FetchType.EAGER)
-	private ArrayList<Audi> audis = new ArrayList<>();
+	@OneToMany(mappedBy="theatre", cascade=CascadeType.ALL)
+	@JsonIgnoreProperties("theatre")
+	private List<Audi> audis = new ArrayList<>();
 
 	public Theatre() {
 	};
@@ -39,7 +41,7 @@ public class Theatre {
 		this.location = location;
 	}
 
-	public ArrayList<Audi> getAudis() {
+	public List<Audi> getAudis() {
 		return audis;
 	}
 
@@ -95,7 +97,6 @@ public class Theatre {
 		this.location = location;
 	}
 
-	// helper methods
 	public boolean addAudi(Audi audi) {
 		int flag = 0;
 		for (Audi a : audis)
@@ -114,9 +115,9 @@ public class Theatre {
 		return isRemoved;
 	}
 
-	public Audi getAudiByNumber(int audiNumber) {
+	public Audi getAudiByNumber(int audiId) {
 		for (Audi audi : audis) {
-			if (audiNumber == audi.getNumber())
+			if (audiId == audi.getId())
 				return audi;
 		}
 		return null;

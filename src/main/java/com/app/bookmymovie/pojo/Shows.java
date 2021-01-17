@@ -2,7 +2,11 @@ package com.app.bookmymovie.pojo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,11 +23,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "shows_tbl")
 public class Shows {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Embedded
+	@ManyToOne
+	@JoinColumn(name = "audi_id")
 	private Audi audi;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "movie_id")
@@ -36,9 +41,14 @@ public class Shows {
 	private LocalTime time;
 	private LocalDate date ;
 	private double price;
-	public Shows(Audi audi ,Movie movie, LocalTime time, double price) {
+	@Embedded
+	@ElementCollection
+	@CollectionTable(name = "show_seats_tbl" , joinColumns = @JoinColumn(name = "show_seats_id"))
+	private List<Seat> seatmap ;
+	public Shows(Audi audi ,Movie movie, LocalTime time, double price ) {
 		super();
-		this.audi = (Audi) audi.clone();
+		this.audi = audi ;
+		this.seatmap = audi.getSeatMap();
 		this.movie = movie;
 		this.time = time;
 		this.price = price;
@@ -91,18 +101,9 @@ public class Shows {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-<<<<<<< HEAD
-	public byte[] getSeatMap() {
-		return seatMap;
-	}
-	public void setSeatMap(byte[] seatMap) {
-		this.seatMap = seatMap;
-	}
 	public void addTicket(Ticket ticket) {
 		tickets.add(ticket);
 	}
-=======
->>>>>>> 8d3cd05... Show now Clones Audi
 	@Override
 	public String toString() {
 		return "Shows [id=" + id + ", audi=" + audi + ", movie=" + movie + ", time=" + time + ", price=" + price

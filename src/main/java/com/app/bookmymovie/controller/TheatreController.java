@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.bookmymovie.pojo.Audi;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.service.ITheatreService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/theatre")
@@ -54,7 +57,7 @@ public class TheatreController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}/audis")
+	@GetMapping("/{thatreID}/audis")
 	public ResponseEntity<?> getAllAudis(@PathVariable int theatreID){
 		List<Audi> audis = theatreService.getAudis(theatreID);
 		if(audis == null)
@@ -62,7 +65,7 @@ public class TheatreController {
 		return new ResponseEntity<>(audis, HttpStatus.FOUND);
 	}
 	
-	@GetMapping("/{id}/audi/{id}")
+	@GetMapping("/{theatreID}/audi/{audiID}")
 	public ResponseEntity<?> getAudi(@PathVariable int theatreID, @PathVariable int audiID){
 		Audi audi = theatreService.getAudi(theatreID, audiID);
 		if(audi == null)
@@ -70,15 +73,16 @@ public class TheatreController {
 		return new ResponseEntity<>(audi, HttpStatus.FOUND);
 	}
 	
-	@PostMapping("/{id}/audi")
-	public ResponseEntity<?> createAudi(@PathVariable int theatreID, @RequestBody Audi audi){
+	@PostMapping("/{theatreID}/audi")
+	public ResponseEntity<?> createAudi(@PathVariable int theatreID, @RequestBody String audi_dtls) throws JsonMappingException, JsonProcessingException{
+		Audi audi = new ObjectMapper().readValue(audi_dtls, Audi.class);
 		Audi createdAudi = theatreService.createAudi(theatreID, audi);
 		if(createdAudi == null)
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 		return new ResponseEntity<>(createdAudi, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("{id}/audi/{id}")
+	@PutMapping("{theatreID}/audi/{audiID}")
 	public ResponseEntity<?> updateAudi(@PathVariable int theatreID, @PathVariable int audiID, @RequestBody Audi audi){
 		Audi updatedAudi = theatreService.updateAudi(theatreID, audiID, audi);
 		if(updatedAudi == null)
@@ -86,7 +90,7 @@ public class TheatreController {
 		return new ResponseEntity<>(updatedAudi, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("{id}/audi/{id}")
+	@DeleteMapping("{theatreID}/audi/{audiID}")
 	public ResponseEntity<?> deleteAudi(@PathVariable int theatreID, @PathVariable int audiID){
 		theatreService.deleteAudi(theatreID, audiID);
 		return new ResponseEntity<>(HttpStatus.OK);

@@ -4,26 +4,35 @@ package com.app.bookmymovie.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Embeddable;
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "audi_tbl")
 public class Audi {
-	/*@Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;*/
+	private Integer id;
 	private Integer number;
 	@Embedded
+	@ElementCollection
+	@CollectionTable(name = "audi_seats_tbl" , joinColumns = @JoinColumn(name = "audi_id"))
 	private List<Seat> seatMap = new ArrayList<>();
 	private int totalSeats;
-	@ManyToOne
+	@ManyToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name="theatre_id")
+	@JsonIgnoreProperties("audis")
 	private Theatre theatre;
 
 	public Audi() {
@@ -36,13 +45,19 @@ public class Audi {
 		this.totalSeats = totalSeats;
 	}
 	
-	/*public Integer getId() {
+	public void modifyAudi ( Audi newAudi) {
+		this.number = newAudi.number ;
+		this.seatMap = newAudi.seatMap ;
+		this.totalSeats = newAudi.totalSeats;
+	}
+	
+	public Integer getId() {
 		return id;
-	}*/
+	}
 
-	/*public void setId(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
-	}*/
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -51,7 +66,11 @@ public class Audi {
 		this.number = number;
 	}
 	public List<Seat> getSeatMap() {
-		return seatMap;
+		List<Seat> clonedSeatMap = new ArrayList<>() ;
+		for(Seat seat : this.seatMap) {
+			clonedSeatMap.add((Seat)seat.clone());
+		}
+		return clonedSeatMap;
 	}
 	public void setSeatMap(List<Seat> seatMap) {
 		this.seatMap = seatMap;
@@ -68,15 +87,6 @@ public class Audi {
 	}
 	public void setTheatre(Theatre theatre) {
 		this.theatre = theatre;
-	}
-	
-	public Object clone()  {
-		List<Seat> clonedSeatMap = new ArrayList<>() ;
-		for(Seat seat : this.seatMap) {
-			clonedSeatMap.add((Seat)seat.clone());
-		}
-		Audi audiCopy = new Audi(this.getNumber() ,clonedSeatMap,this.getTotalSeats()) ;
-		return audiCopy ;
 	}
 	
 	@Override

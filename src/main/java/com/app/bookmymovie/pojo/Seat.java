@@ -1,38 +1,41 @@
 package com.app.bookmymovie.pojo;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Seat implements Cloneable{
-	int row ;
-	char column ;
-	public int getRow() {
-		return row;
+	@Column(name = "r_number")
+	int rowNumber ;
+	@Column(name = "c_number")
+	char colNumber ;
+	public int getRowNumber() {
+		return rowNumber;
 	}
-	public void setRow(int row) {
-		this.row = row;
+	public void setRowNumber(int row) {
+		this.rowNumber = row;
 	}
-	public char getColumn() {
-		return column;
+	public char getColNumber() {
+		return colNumber;
 	}
-	public void setColumn(char column) {
-		this.column = column;
+	public void setColNumber(char column) {
+		this.colNumber = column;
 	}
 	public Seat(int row, char column) {
 		super();
-		this.row = row;
-		this.column = column;
+		this.rowNumber = row;
+		this.colNumber = column;
 	}
 	public Seat() {
 		super();
 	}
 	
 	public Object clone() {
-		return new Seat(this.row,this.column);
+		return new Seat(this.rowNumber,this.colNumber);
 	}
 	@Override
 	public String toString() {
-		return "Seat [row=" + row + ", column=" + column + "]";
+		return "Seat [row=" + rowNumber + ", column=" + colNumber + "]";
 	}
 	
 }

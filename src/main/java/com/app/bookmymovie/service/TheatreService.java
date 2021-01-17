@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.bookmymovie.pojo.Audi;
 import com.app.bookmymovie.pojo.Theatre;
+import com.app.bookmymovie.repository.AudiRepository;
 import com.app.bookmymovie.repository.TheatreRepository;
 
 @Service
@@ -18,6 +19,9 @@ public class TheatreService implements ITheatreService {
 	@Autowired
 	private TheatreRepository theatreRepo;
 
+	@Autowired
+	private AudiRepository audiRepo;
+	
 	@Override
 	public Theatre getTheatre(int id) {
 		Optional<Theatre> theatre = theatreRepo.findById(id);
@@ -70,33 +74,22 @@ public class TheatreService implements ITheatreService {
 		Optional<Theatre> theatre = theatreRepo.findById(theatreID);
 		if (!theatre.isPresent())
 			return null;
-		boolean isAdded = theatre.get().addAudi(audi);
-		if (theatreRepo.save(theatre.get()) != null && isAdded)
-			return audi;
-		return null;
+		theatre.get().addAudi(audi);
+		audi = audiRepo.save(audi);
+		return audi;
 	}
 
 	@Override
-	public Audi updateAudi(int theatreID, int audiNumber, Audi audi) {
+	public Audi updateAudi(int theatreID, int audiId, Audi audi) {
 		Optional<Theatre> theatre = theatreRepo.findById(theatreID);
-		if (!theatre.isPresent())
-			return null;
-		for (Audi a : theatre.get().getAudis()) {
-			if (a.getNumber() == audiNumber) {
-				theatre.get().removeAudi(a);
-				if (theatre.get().addAudi(audi))
-					return audi;
-			}
-		}
-		return null;
+		audi.setId(audiId);
+		audi.setTheatre(theatre.get());
+		audiRepo.save(audi);
+		return audi;
 	}
 
 	@Override
 	public void deleteAudi(int theatreID, int audiID) {
-		Optional<Theatre> theatre = theatreRepo.findById(theatreID);
-		if (theatre.isPresent()) {
-			for (Audi audi : theatre.get().getAudis())
-				theatre.get().removeAudi(audi);
-		}
+		audiRepo.delete(audiRepo.findById(audiID).get());
 	}
 }
