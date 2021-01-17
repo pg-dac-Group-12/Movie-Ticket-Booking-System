@@ -1,44 +1,44 @@
 package com.app.bookmymovie.pojo;
 
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "audi_tbl")
+@Embeddable
 public class Audi {
-	@Id
+	/*@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer id;*/
 	private Integer number;
-	private byte[] seatMap;
+	@Embedded
+	private List<Seat> seatMap = new ArrayList<>();
 	private int totalSeats;
 	@ManyToOne
 	@JoinColumn(name="theatre_id")
 	private Theatre theatre;
 
-	public Audi(Integer number, byte[] seatMap, int totalSeats) {
+	public Audi(Integer number, List<Seat> seatMap, int totalSeats) {
 		super();
 		this.number = number;
 		this.seatMap = seatMap;
 		this.totalSeats = totalSeats;
 	}
 	
-	public Integer getId() {
+	/*public Integer getId() {
 		return id;
-	}
+	}*/
 
-	public void setId(Integer id) {
+	/*public void setId(Integer id) {
 		this.id = id;
-	}
+	}*/
 
 	public Integer getNumber() {
 		return number;
@@ -46,10 +46,10 @@ public class Audi {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
-	public byte[] getSeatMap() {
+	public List<Seat> getSeatMap() {
 		return seatMap;
 	}
-	public void setSeatMap(byte[] seatMap) {
+	public void setSeatMap(List<Seat> seatMap) {
 		this.seatMap = seatMap;
 	}
 	public int getTotalSeats() {
@@ -67,7 +67,7 @@ public class Audi {
 	}
 	@Override
 	public String toString() {
-		return "Audi [number=" + number + ", seatMap=" + Arrays.toString(seatMap) + ", totalSeats=" + totalSeats + "]";
+		return "Audi [number=" + number + ", seatMap=" + seatMap + ", totalSeats=" + totalSeats + "]";
 	}
 	
 
