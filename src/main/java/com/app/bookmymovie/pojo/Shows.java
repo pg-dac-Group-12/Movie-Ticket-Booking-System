@@ -103,7 +103,6 @@ public class Shows {
 	}
 	public void addTicket(Ticket ticket) {
 		tickets.add(ticket);
-		ticket.add(this);
 	}
 	@Override
 	public String toString() {

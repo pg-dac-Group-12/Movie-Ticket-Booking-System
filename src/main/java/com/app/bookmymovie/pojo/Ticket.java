@@ -51,6 +51,10 @@ public class Ticket {
 	}
 
 
+	public Ticket() {
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -128,8 +132,9 @@ public class Ticket {
 		this.transaction = transaction;
 	}
 
-	public void add(Shows show) {
+	public void addShow(Shows show) {
 		this.show = show ;
+		show.addTicket(this);
 		
 	}	
 

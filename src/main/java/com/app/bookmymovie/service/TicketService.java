@@ -6,13 +6,19 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.pojo.Ticket;
+import com.app.bookmymovie.pojo.Transaction;
+import com.app.bookmymovie.pojo.User;
+import com.app.bookmymovie.repository.ShowsRepository;
 import com.app.bookmymovie.repository.TicketRepository;
 
 public class TicketService implements ITicketService{
 	@Autowired
 	TicketRepository ticketRepo ;
 	
+	@Autowired
+	ShowsRepository showRepo ;
 	@Autowired
 	IPaymentService paymentService;
 	
@@ -35,5 +41,22 @@ public class TicketService implements ITicketService{
 		ticketRepo.delete(ticket);
 		return paymentService.refundPayment(ticket.getTransaction());
 	}
+
+	@Override
+	public Ticket createTicket(int showId , int[] seats, User user ) {
+		Ticket ticket = new Ticket() ;
+		Shows show = showRepo.findById(showId).get();
+		ticket.addShow(show);
+		double amount = seats.length * show.getPrice();
+		ticket.setAmount(amount);
+		user.addTicket(ticket);
+		Transaction transaction = paymentService.initiatePayment( amount , user);
+		ticket.setTransaction(transaction);
+		ticket.setTime(LocalTime.now());
+		ticket.setDate(LocalDate.now());
+		ticket.setSeats(seats);
+		return ticketRepo.save(ticket) ;
+	}
+
 
 }

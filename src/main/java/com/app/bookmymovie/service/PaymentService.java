@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.bookmymovie.pojo.Transaction;
+import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.repository.TransactionRepository;
 
 @Service
@@ -21,7 +22,14 @@ public class PaymentService implements IPaymentService {
 			return false ;
 		//TODO Payment Gateway Code 
 		System.out.println("Refund has been Initiated");
-		return false;
+		return true;
+	}
+
+	@Override
+	public Transaction initiatePayment(double amount, User user) {
+		
+		//TODO Payment Gateway
+		return new Transaction();
 	}
 
 }

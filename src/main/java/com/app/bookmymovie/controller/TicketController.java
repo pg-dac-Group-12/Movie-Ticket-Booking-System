@@ -1,5 +1,7 @@
 package com.app.bookmymovie.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.bookmymovie.pojo.Ticket;
+import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.service.TicketService;
 
 @RestController
@@ -39,5 +42,13 @@ public class TicketController {
 		if(!ticketService.cancelTicket(ticket))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/{showId}")
+	public ResponseEntity<?> createTicket(@RequestBody int[] seats , @PathVariable int showId , HttpSession session) {
+		Ticket ticket = ticketService.createTicket(showId, seats, (User)session.getAttribute("user")) ;
+		if(ticket == null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ticket ,HttpStatus.OK);
 	}
 }
