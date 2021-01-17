@@ -6,11 +6,6 @@ import java.util.List;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Embeddable
 public class Audi {
@@ -21,8 +16,7 @@ public class Audi {
 	@Embedded
 	private List<Seat> seatMap = new ArrayList<>();
 	private int totalSeats;
-	@ManyToOne
-	@JoinColumn(name="theatre_id")
+
 	private Theatre theatre;
 
 	public Audi(Integer number, List<Seat> seatMap, int totalSeats) {

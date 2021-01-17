@@ -3,13 +3,15 @@ package com.app.bookmymovie.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +26,10 @@ public class Theatre {
 	private String name;
 	private String city;
 	private String location;
-	@OneToMany(mappedBy = "theatre", fetch = FetchType.EAGER)
-	private ArrayList<Audi> audis = new ArrayList<>();
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "audis_tbl",joinColumns = @JoinColumn(name="theatre_id"))
+	@Column(name = "audi")
+	private List<Audi> audis = new ArrayList<>();
 
 	public Theatre() {
 	};
@@ -39,7 +43,7 @@ public class Theatre {
 		this.location = location;
 	}
 
-	public ArrayList<Audi> getAudis() {
+	public List<Audi> getAudis() {
 		return audis;
 	}
 
