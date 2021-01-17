@@ -1,5 +1,6 @@
 package com.app.bookmymovie.pojo;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 
@@ -29,15 +30,17 @@ public class Shows {
 	@JoinColumn(name = "theatre_id")
 	private Theatre threatre;
 	private LocalTime time;
+	private LocalDate date ;
 	private double price;
 	private byte[] seatMap;
-	public Shows(Audi audi, Movie movie, LocalTime time, double price, byte[] seatMap) {
+	public Shows(Audi audi, Movie movie, LocalTime time, double price, byte[] seatMap , LocalDate date) {
 		super();
 		this.audi = audi;
 		this.movie = movie;
 		this.time = time;
 		this.price = price;
 		this.seatMap = seatMap;
+		this.date = date ;
 	}
 	public Integer getId() {
 		return id;
@@ -62,6 +65,12 @@ public class Shows {
 	}
 	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+	public LocalDate getDate() {
+		return date;
+	}
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 	public double getPrice() {
 		return price;

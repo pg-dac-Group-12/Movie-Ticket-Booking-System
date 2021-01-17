@@ -1,6 +1,8 @@
 package com.app.bookmymovie.pojo;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 import javax.persistence.Entity;
@@ -30,17 +32,21 @@ public class Ticket {
 	private User user;
 	private int[] seats;
 	private double amount;
+	private LocalTime time ;
+	private LocalDate date ;
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="transaction_id")
 	private Transaction transaction;
 
 	
-	public Ticket( Shows show, User user, int[] seats, double amount, Transaction transaction) {
+	public Ticket( Shows show, User user, int[] seats, double amount,LocalDate date , LocalTime time , Transaction transaction) {
 		super();
 		this.show = show;
 		this.user = user;
 		this.seats = seats;
 		this.amount = amount;
+		this.date = date ;
+		this.time = time ;
 		this.transaction = transaction;
 	}
 
@@ -73,7 +79,25 @@ public class Ticket {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public LocalTime getTime() {
+		return time;
+	}
 
+
+	public void setTime(LocalTime time) {
+		this.time = time;
+	}
+
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
 
 	public int[] getSeats() {
 		return seats;
