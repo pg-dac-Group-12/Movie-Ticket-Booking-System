@@ -6,11 +6,9 @@ import java.util.List;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -71,6 +69,16 @@ public class Audi {
 	public void setTheatre(Theatre theatre) {
 		this.theatre = theatre;
 	}
+	
+	public Object clone()  {
+		List<Seat> clonedSeatMap = new ArrayList<>() ;
+		for(Seat seat : this.seatMap) {
+			clonedSeatMap.add((Seat)seat.clone());
+		}
+		Audi audiCopy = new Audi(this.getNumber() ,clonedSeatMap,this.getTotalSeats()) ;
+		return audiCopy ;
+	}
+	
 	@Override
 	public String toString() {
 		return "Audi [number=" + number + ", seatMap=" + seatMap + ", totalSeats=" + totalSeats + "]";

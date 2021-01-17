@@ -2,11 +2,8 @@ package com.app.bookmymovie.pojo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,8 +22,7 @@ public class Shows {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "audi_id")
+	@Embedded
 	private Audi audi;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "movie_id")
@@ -41,17 +36,12 @@ public class Shows {
 	private LocalTime time;
 	private LocalDate date ;
 	private double price;
-	private byte[] seatMap;
-	
-	public Shows() {};
-	public Shows(Audi audi, Movie movie, LocalTime time, double price, byte[] seatMap , LocalDate date) {
+	public Shows(Audi audi ,Movie movie, LocalTime time, double price) {
 		super();
-		this.audi = audi;
+		this.audi = (Audi) audi.clone();
 		this.movie = movie;
 		this.time = time;
 		this.price = price;
-		this.seatMap = seatMap;
-		this.date = date ;
 	}
 	public Integer getId() {
 		return id;
@@ -101,6 +91,7 @@ public class Shows {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+<<<<<<< HEAD
 	public byte[] getSeatMap() {
 		return seatMap;
 	}
@@ -110,9 +101,11 @@ public class Shows {
 	public void addTicket(Ticket ticket) {
 		tickets.add(ticket);
 	}
+=======
+>>>>>>> 8d3cd05... Show now Clones Audi
 	@Override
 	public String toString() {
 		return "Shows [id=" + id + ", audi=" + audi + ", movie=" + movie + ", time=" + time + ", price=" + price
-				+ ", seatMap=" + Arrays.toString(seatMap) + "]";
+				+ ", seatMap="+ "]";
 	}
 }

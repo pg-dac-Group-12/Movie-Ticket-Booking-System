@@ -3,7 +3,7 @@ package com.app.bookmymovie.pojo;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Seat {
+public class Seat implements Cloneable{
 	int row ;
 	char column ;
 	public int getRow() {
@@ -25,6 +25,10 @@ public class Seat {
 	}
 	public Seat() {
 		super();
+	}
+	
+	public Object clone() {
+		return new Seat(this.row,this.column);
 	}
 	@Override
 	public String toString() {
