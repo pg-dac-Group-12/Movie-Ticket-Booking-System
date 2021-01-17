@@ -1,15 +1,13 @@
 package com.app.bookmymovie.pojo;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.List;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,15 +22,16 @@ public class Movie {
 	private String[] cast;
 	private long duration; // duration minutes
 	private double rating;
-	private byte[] icon;
+	private String icon;
 	private int totalShows;
+	private String iconContentType;
 	
 	
 	public Movie() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Movie(String title, String director, String[] cast, long duration, double rating, byte[] icon,
+	public Movie(String title, String director, String[] cast, long duration, double rating, String icon,
 			int totalShows) {
 		super();
 		this.title = title;
@@ -79,10 +78,10 @@ public class Movie {
 	public void setRating(double rating) {
 		this.rating = rating;
 	}
-	public byte[] getIcon() {
+	public String getIcon() {
 		return icon;
 	}
-	public void setIcon(byte[] icon) {
+	public void setIcon(String icon) {
 		this.icon = icon;
 	}
 	public int getTotalShows() {
@@ -91,10 +90,17 @@ public class Movie {
 	public void setTotalShows(int totalShows) {
 		this.totalShows = totalShows;
 	}
+	
+	public String getIconContentType() {
+		return iconContentType;
+	}
+	public void setIconContentType(String iconContentType) {
+		this.iconContentType = iconContentType;
+	}
 	@Override
 	public String toString() {
 		return "Movie [id=" + id + ", title=" + title + ", director=" + director + ", cast=" + Arrays.toString(cast)
-				+ ", duration=" + duration + ", rating=" + rating + ", icon=" + Arrays.toString(icon) + ", totalShows="
+				+ ", duration=" + duration + ", rating=" + rating + ", icon=" + icon + ", totalShows="
 				+ totalShows + "]";
 	}
 

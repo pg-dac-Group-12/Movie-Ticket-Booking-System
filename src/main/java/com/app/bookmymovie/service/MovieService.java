@@ -7,9 +7,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.bookmymovie.pojo.Movie;
-
 import com.app.bookmymovie.repository.MovieRepository;
 
 @Service
@@ -30,8 +30,15 @@ public class MovieService implements IMovieService {
 			return null;
 		movie.setId(id);
 		return movieRepo.save(movie);
-	
 	}
+
+	public Movie addIcon(int id, MultipartFile imageFile) {
+		Movie m = movieRepo.findById(id).get();
+		m.setIcon(imageFile.getName());
+		m.setIconContentType(imageFile.getContentType());
+		return movieRepo.save(m);
+	}
+	
 	public List<Movie> getAllMovie() {
 		return movieRepo.findAll();
 
