@@ -55,12 +55,12 @@ public class TheatreService implements ITheatreService {
 	}
 
 	@Override
-	public Audi getAudi(int theatreID, int audiId) {
+	public Audi getAudi(int theatreID, int audiNumber) {
 		Optional<Theatre> theatre = theatreRepo.findById(theatreID);
 		if (!theatre.isPresent())
 			return null;
 		for (Audi a : theatre.get().getAudis())
-			if (audiId == a.getId())
+			if (audiNumber == a.getNumber())
 				return a;
 		return null;
 	}
@@ -77,12 +77,12 @@ public class TheatreService implements ITheatreService {
 	}
 
 	@Override
-	public Audi updateAudi(int theatreID, int audiID, Audi audi) {
+	public Audi updateAudi(int theatreID, int audiNumber, Audi audi) {
 		Optional<Theatre> theatre = theatreRepo.findById(theatreID);
 		if (!theatre.isPresent())
 			return null;
 		for (Audi a : theatre.get().getAudis()) {
-			if (a.getId() == audiID) {
+			if (a.getNumber() == audiNumber) {
 				theatre.get().removeAudi(a);
 				if (theatre.get().addAudi(audi))
 					return audi;
