@@ -53,7 +53,7 @@ public class MovieController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getAllMovieById(@PathVariable int id){
 		Optional<Movie> movies = movieService.getAllMovieById(id);
-		if (movies.isEmpty())
+		if (movies.isPresent())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(movies, HttpStatus.OK);
 
