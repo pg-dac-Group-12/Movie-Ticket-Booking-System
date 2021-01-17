@@ -128,10 +128,14 @@ public class Ticket {
 		this.transaction = transaction;
 	}
 
+	public void add(Shows show) {
+		this.show = show ;
+		
+	}	
 
 	@Override
 	public String toString() {
 		return "Ticket [id=" + id + ", show=" + show + ", user=" + user + ", seats=" + Arrays.toString(seats)
 				+ ", amount=" + amount + ", transaction=" + transaction + "]";
-	}	
+	}
 }

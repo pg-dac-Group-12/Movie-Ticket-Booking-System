@@ -2,7 +2,9 @@ package com.app.bookmymovie.pojo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,6 +32,8 @@ public class Shows {
 	@ManyToOne
 	@JoinColumn(name = "theatre_id")
 	private Theatre threatre;
+	@OneToMany(mappedBy = "show")
+	private List<Ticket> tickets = new ArrayList<>() ;
 	private LocalTime time;
 	private LocalDate date ;
 	private double price;
@@ -47,6 +52,18 @@ public class Shows {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public Theatre getThreatre() {
+		return threatre;
+	}
+	public void setThreatre(Theatre threatre) {
+		this.threatre = threatre;
+	}
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
 	}
 	public Audi getAudi() {
 		return audi;
@@ -83,6 +100,10 @@ public class Shows {
 	}
 	public void setSeatMap(byte[] seatMap) {
 		this.seatMap = seatMap;
+	}
+	public void addTicket(Ticket ticket) {
+		tickets.add(ticket);
+		ticket.add(this);
 	}
 	@Override
 	public String toString() {
