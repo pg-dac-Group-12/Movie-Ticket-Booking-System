@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.app.bookmymovie.pojo.Transaction;
 import com.app.bookmymovie.pojo.User;
+import com.app.bookmymovie.pojo.RazorpayClient;
 import com.app.bookmymovie.repository.TransactionRepository;
+
 
 @Service
 @Transactional
@@ -15,6 +17,7 @@ public class PaymentService implements IPaymentService {
 
 	@Autowired
 	TransactionRepository transactionRepo ;
+	RazorpayClient razorpayClient = new RazorpayClient("key_id", "key_secret");
 	
 	@Override
 	public boolean refundPayment(Transaction transaction) {
@@ -32,5 +35,6 @@ public class PaymentService implements IPaymentService {
 		//TODO Payment Gateway
 		return new Transaction();
 	}
+	
 
 }
