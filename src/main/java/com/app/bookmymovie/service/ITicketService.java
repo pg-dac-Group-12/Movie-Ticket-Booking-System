@@ -10,4 +10,6 @@ public interface ITicketService {
 	Optional<Ticket> getAllTicketsByUserId(int userId);
 	boolean cancelTicket(Ticket ticket);
 	Ticket createTicket(int showId, Integer[] seats, User user);
+	Ticket saveTicket();
+	void invalidateTicket();
 }

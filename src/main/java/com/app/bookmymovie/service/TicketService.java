@@ -4,13 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.pojo.Ticket;
-import com.app.bookmymovie.pojo.Transaction;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.repository.ShowsRepository;
 import com.app.bookmymovie.repository.TicketRepository;
@@ -20,7 +21,8 @@ import com.app.bookmymovie.repository.TicketRepository;
 public class TicketService implements ITicketService{
 	@Autowired
 	TicketRepository ticketRepo ;
-	
+	@Autowired
+	HttpSession session;
 	@Autowired
 	ShowsRepository showRepo ;
 	@Autowired
@@ -45,6 +47,19 @@ public class TicketService implements ITicketService{
 		ticketRepo.delete(ticket);
 		return paymentService.refundPayment(ticket.getTransaction()); 
 	}
+	
+	@Override
+	public Ticket saveTicket() {
+		Ticket ticket =(Ticket) session.getAttribute("Ticket");
+		ticketRepo.save(ticket);
+		session.removeAttribute("ticket");
+		return ticket;
+	}
+	
+	@Override
+	public void invalidateTicket() {
+		session.removeAttribute("ticket");
+	}
 
 	@Override
 	public Ticket createTicket(int showId , Integer[] seats, User user ) {
@@ -54,12 +69,11 @@ public class TicketService implements ITicketService{
 		double amount = seats.length * show.getPrice();
 		ticket.setAmount(amount);
 		user.addTicket(ticket);
-		/* Transaction transaction = */ paymentService.initiatePayment( amount , user);
-		//ticket.setTransaction(transaction);
 		ticket.setTime(show.getTime());
 		ticket.setDate(show.getDate());
 		ticket.setSeats(seats);
-		return ticketRepo.save(ticket) ;
+		session.setAttribute("ticket", ticket);
+		return ticket ;
 	}
 
 

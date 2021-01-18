@@ -2,7 +2,6 @@ package com.app.bookmymovie.pojo;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +18,7 @@ public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private String transactionId ;
 	private double amount;
 	private LocalDateTime time; 
 	@OneToOne(mappedBy = "transaction")
@@ -27,12 +27,13 @@ public class Transaction {
 	PaymentMode paymentMode;
 	
 	
-	public Transaction( double amount, LocalDateTime time, Ticket ticket, PaymentMode paymentMode) {
+	public Transaction( double amount, LocalDateTime time, Ticket ticket, PaymentMode paymentMode , String transactionId) {
 		super();
 		this.amount = amount;
 		this.time = time;
 		this.ticket = ticket;
 		this.paymentMode = paymentMode;
+		this.transactionId = transactionId;
 	}
 
 
@@ -104,6 +105,16 @@ public class Transaction {
 	public String toString() {
 		return "Transaction [id=" + id + ", amount=" + amount + ", time=" + time + ", ticket=" + ticket
 				+ ", paymentMode=" + paymentMode + "]";
+	}
+
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
 	}
 	
 	
