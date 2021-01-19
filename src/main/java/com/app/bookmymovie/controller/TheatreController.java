@@ -57,7 +57,7 @@ public class TheatreController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/{thatreID}/audis")
+	@GetMapping("/{theatreID}/audis")
 	public ResponseEntity<?> getAllAudis(@PathVariable int theatreID){
 		List<Audi> audis = theatreService.getAudis(theatreID);
 		if(audis == null)

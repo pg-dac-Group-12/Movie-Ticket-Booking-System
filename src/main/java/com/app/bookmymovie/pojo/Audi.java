@@ -30,7 +30,7 @@ public class Audi {
 	@CollectionTable(name = "audi_seats_tbl" , joinColumns = @JoinColumn(name = "audi_id"))
 	private List<Seat> seatMap = new ArrayList<>();
 	private int totalSeats;
-	@ManyToOne(cascade= CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name="theatre_id")
 	@JsonIgnoreProperties("audis")
 	private Theatre theatre;

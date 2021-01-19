@@ -1,8 +1,6 @@
 package com.app.bookmymovie.pojo;
 
-
 import java.util.Arrays;
-
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

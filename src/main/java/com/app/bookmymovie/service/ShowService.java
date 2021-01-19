@@ -13,6 +13,7 @@ import com.app.bookmymovie.pojo.Movie;
 import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.Ticket;
+import com.app.bookmymovie.repository.AudiRepository;
 import com.app.bookmymovie.repository.ShowsRepository;
 
 @Service
@@ -23,10 +24,14 @@ public class ShowService implements IShowService {
 	ShowsRepository showsRepo ;
 	
 	@Autowired
+	AudiRepository audiRepo ;
+	
+	@Autowired
 	TicketService ticketService ;
 	
 	@Override
-	public Optional<Shows> getAllShowsByMovieIdAndDate(int id, LocalDate date) {
+	public Optional<Shows> getAllShowsByMovieIdAndDate(int id,  LocalDate date) {
+		//return showsRepo.findAllByMovieIdAndDate(id,  java.sql.Date.valueOf(date));
 		return showsRepo.findAllByMovieIdAndDate(id, date);
 	}
 
@@ -37,14 +42,12 @@ public class ShowService implements IShowService {
 
 	@Override
 	public Shows createShow(Shows show, int theatreID, int audiID,  int movieID) {
-		Audi audi = new Audi();
-		audi.setNumber(audiID);
+		Optional<Audi> audiOptional = audiRepo.findById(audiID);
 		Theatre theatre = new Theatre();
 		theatre.setId(theatreID);
 		Movie movie = new Movie();
 		movie.setId(movieID);
-		
-		show.setAudi(audi);
+		show.setAudi(audiOptional.get());
 		show.setTheatre(theatre);
 		show.setMovie(movie);
 		return showsRepo.save(show);

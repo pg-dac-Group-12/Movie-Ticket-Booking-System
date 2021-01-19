@@ -1,9 +1,12 @@
 package com.app.bookmymovie.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,6 +31,14 @@ public class UserController {
 		if(user == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> getUser(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null)
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")

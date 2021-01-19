@@ -3,6 +3,7 @@ package com.app.bookmymovie.controller;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.service.IShowService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/shows")
@@ -25,7 +29,9 @@ public class ShowsController {
 	IShowService showService ;
 	
 	@GetMapping
-	public ResponseEntity<?> getAllShowsByMovieIdAndDate(@RequestParam int movieId, @RequestParam LocalDate date) {
+	public ResponseEntity<?> getAllShowsByMovieIdAndDate(@RequestParam int movieId, @RequestParam("date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+		
 		if(!showService.getAllShowsByMovieIdAndDate(movieId,date).isPresent())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
@@ -46,7 +52,8 @@ public class ShowsController {
 		return new ResponseEntity<>(showService.getAllShowsByTheatreId(theatreID).get(), HttpStatus.OK);
 	}
 	@PostMapping()
-	public ResponseEntity<?> createShow(@RequestBody Shows show,@RequestParam int theatreID, @RequestParam int audiID, @RequestParam int movieID) {
+	public ResponseEntity<?> createShow(@RequestBody String showDtls,@RequestParam int theatreID, @RequestParam int audiID, @RequestParam int movieID) throws JsonMappingException, JsonProcessingException {
+		Shows show = new ObjectMapper().readValue(showDtls, Shows.class);
 		show = showService.createShow(show, theatreID, audiID, movieID);
 		if(show == null ) 
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

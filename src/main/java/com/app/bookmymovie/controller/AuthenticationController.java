@@ -7,11 +7,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.bookmymovie.annotation.Authorize;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.service.IAuthenticationService;
@@ -38,6 +38,16 @@ public class AuthenticationController {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 			session.setAttribute("user", user.get());
 		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/logoff")
+	public ResponseEntity<?> logOffUser(HttpSession session) {
+		System.out.println("Authentication Controller : /logoff");
+		User user = (User) session.getAttribute("user");
+		if (user == null)
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		session.removeAttribute("user");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

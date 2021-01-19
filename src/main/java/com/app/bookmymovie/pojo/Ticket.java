@@ -1,6 +1,5 @@
 package com.app.bookmymovie.pojo;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -16,8 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 
 @Entity
 @Table(name = "ticket_tbl")
@@ -69,7 +66,7 @@ public class Ticket {
 		return show;
 	}
 
-
+	
 	public void setShow(Shows show) {
 		this.show = show;
 	}
