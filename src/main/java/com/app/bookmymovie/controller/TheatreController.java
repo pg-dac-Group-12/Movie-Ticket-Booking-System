@@ -31,8 +31,8 @@ public class TheatreController {
 	public ResponseEntity<?> getTheatre(@PathVariable int id) {
 		Theatre theatre = theatreService.getTheatre(id);
 		if (theatre == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(theatre, HttpStatus.FOUND);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(theatre, HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -61,16 +61,16 @@ public class TheatreController {
 	public ResponseEntity<?> getAllAudis(@PathVariable int theatreID){
 		List<Audi> audis = theatreService.getAudis(theatreID);
 		if(audis == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(audis, HttpStatus.FOUND);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(audis, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{theatreID}/audi/{audiID}")
 	public ResponseEntity<?> getAudi(@PathVariable int theatreID, @PathVariable int audiID){
 		Audi audi = theatreService.getAudi(theatreID, audiID);
 		if(audi == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(audi, HttpStatus.FOUND);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(audi, HttpStatus.OK);
 	}
 	
 	@PostMapping("/{theatreID}/audi")
