@@ -26,7 +26,7 @@ public class PaymentController {
 		Order orderId = paymentService.createOrder(amount);
 		if(orderId == null) 
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<>(orderId ,HttpStatus.OK);
+		return new ResponseEntity<>(orderId.toString() ,HttpStatus.OK);
 	}
 	
 	@GetMapping("/success")

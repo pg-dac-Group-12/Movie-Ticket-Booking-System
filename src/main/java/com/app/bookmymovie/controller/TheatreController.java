@@ -74,8 +74,7 @@ public class TheatreController {
 	}
 	
 	@PostMapping("/{theatreID}/audi")
-	public ResponseEntity<?> createAudi(@PathVariable int theatreID, @RequestBody String audi_dtls) throws JsonMappingException, JsonProcessingException{
-		Audi audi = new ObjectMapper().readValue(audi_dtls, Audi.class);
+	public ResponseEntity<?> createAudi(@PathVariable int theatreID, @RequestBody Audi audi) throws JsonMappingException, JsonProcessingException{
 		Audi createdAudi = theatreService.createAudi(theatreID, audi);
 		if(createdAudi == null)
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);

@@ -64,8 +64,7 @@ public class ShowsController {
 		return new ResponseEntity<>(showService.getAllShowsByAudiId(audiId).get(), HttpStatus.OK);
 	}
 	@PostMapping()
-	public ResponseEntity<?> createShow(@RequestBody String showDtls,@RequestParam int theatreID, @RequestParam int audiID, @RequestParam int movieID) throws JsonMappingException, JsonProcessingException {
-		Shows show = new ObjectMapper().readValue(showDtls, Shows.class);
+	public ResponseEntity<?> createShow(@RequestBody Shows show,@RequestParam int theatreID, @RequestParam int audiID, @RequestParam int movieID) throws JsonMappingException, JsonProcessingException {
 		show = showService.createShow(show, theatreID, audiID, movieID);
 		if(show == null ) 
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
