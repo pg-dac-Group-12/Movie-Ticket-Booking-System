@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,8 @@ public class TheatreService implements ITheatreService {
 
 	@Autowired
 	private TheatreRepository theatreRepo;
-
+	@Autowired
+	private PasswordEncoder encoder ;
 	@Autowired
 	private AudiRepository audiRepo;
 	
@@ -32,6 +34,7 @@ public class TheatreService implements ITheatreService {
 
 	@Override
 	public Theatre createTheatre(Theatre theatre) {
+		theatre.setPassword(encoder.encode(theatre.getPassword()));
 		Theatre theatreSaved = theatreRepo.save(theatre);
 		return theatreSaved;
 	}

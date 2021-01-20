@@ -11,8 +11,7 @@ import com.app.bookmymovie.pojo.Theatre;
 
 public interface TheatreRepository extends JpaRepository<Theatre,Integer>{
 
-	
-
 	Optional<Theatre> findByEmailAndPassword(String email,String password);
+	Optional<Theatre> findByEmail(String email);
 
 }

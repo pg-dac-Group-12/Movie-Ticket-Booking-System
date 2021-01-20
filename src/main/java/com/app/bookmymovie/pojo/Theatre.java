@@ -15,14 +15,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "theatre_tbl")
-public class Theatre {
+public class Theatre extends Actor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String email;
-	private String password;
-	private String name;
 	private String city;
 	private String location;
 	@OneToMany(mappedBy="theatre", cascade=CascadeType.ALL)
@@ -32,11 +29,8 @@ public class Theatre {
 	public Theatre() {
 	};
 
-	public Theatre(String email, String password, String name, String city, String location) {
-		super();
-		this.email = email;
-		this.password = password;
-		this.name = name;
+	public Theatre(String name ,String email, String password, String city, String location) {
+		super(name,email,password,Role.THEATRE);
 		this.city = city;
 		this.location = location;
 	}
@@ -56,31 +50,7 @@ public class Theatre {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	
 	public String getCity() {
 		return city;
 	}
@@ -125,7 +95,7 @@ public class Theatre {
 
 	@Override
 	public String toString() {
-		return "Theatre [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", city=" + city
+		return "Theatre [id=" + id + ", email=" + ", password=" + ", name=" + ", city=" + city
 				+ ", location=" + location + "]";
 	}
 }

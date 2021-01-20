@@ -9,4 +9,5 @@ import com.app.bookmymovie.pojo.User;
 public interface UserRepository extends JpaRepository<User, Integer>  {
 	Optional<User> findByEmailAndPassword(String email,String password);
 	Optional<User> findAllUserById(int id);
+	Optional<User> findByEmail(String email);
 }

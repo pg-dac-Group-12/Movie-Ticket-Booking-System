@@ -5,12 +5,24 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.app.bookmymovie.dto.AuthenticationRequest;
+import com.app.bookmymovie.dto.AuthenticationResponse;
+import com.app.bookmymovie.pojo.Role;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.repository.TheatreRepository;
 import com.app.bookmymovie.repository.UserRepository;
+import com.app.bookmymovie.util.JwtUtil;
 @Service
 @Transactional
 public class AuthenticationService implements IAuthenticationService {
@@ -18,7 +30,15 @@ public class AuthenticationService implements IAuthenticationService {
 	UserRepository userRepo ;
 	@Autowired
 	TheatreRepository theatreRepo ;
-	
+	@Autowired
+	private AuthenticationManager mgr;
+	@Autowired
+	private UserDetailsService service;
+	@Autowired
+	private JwtUtil utils;
+	@Autowired
+	PasswordEncoder encoder ;
+
 	@Override
 	public Optional<User> authenticateUser(String email, String password) {
 		Optional<User> user = userRepo.findByEmailAndPassword(email, password);
@@ -29,25 +49,38 @@ public class AuthenticationService implements IAuthenticationService {
 		Optional<Theatre> theatreAdmin = theatreRepo.findByEmailAndPassword(email, password);
 		return theatreAdmin;
 	}
-
 	@Override
-	public boolean changePassword(User user, String oldPassword, String newPassword) {
-		if(oldPassword.equals(user.getPassword())) {
-			user.setPassword(newPassword);
+	public AuthenticationResponse changePassword(String oldPassword , String newPassword) {
+		String emailId = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		UserDetails userDetails = service.loadUserByUsername(emailId);
+		if(!encoder.matches(oldPassword, userDetails.getPassword()))
+			return null ;
+		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Role.USER.toString()))) {
+			User user = userRepo.findByEmail(userDetails.getUsername()).get();
+			user.setPassword(encoder.encode(newPassword));
 			userRepo.save(user);
-			return true ;
 		}
-		return false ;
+		else if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority(Role.USER.toString()))) {
+			Theatre theatre = theatreRepo.findByEmail(userDetails.getUsername()).get();
+			theatre.setPassword(encoder.encode(newPassword));
+			theatreRepo.save(theatre);
+		}
+
+		AuthenticationResponse resp = this.authenticateActor(new AuthenticationRequest(userDetails.getUsername(), newPassword));
+		return resp ;
 	}
 
 	@Override
-	public boolean changePassword(Theatre theatreAdmin, String oldPassword, String newPassword) {
-		if(oldPassword.equals(theatreAdmin.getPassword())) {
-			theatreAdmin.setPassword(newPassword);
-			theatreRepo.save(theatreAdmin);
-			return true ;
+	public AuthenticationResponse authenticateActor(AuthenticationRequest req) {
+		System.out.println(req.getPassword() + "User" + req.getUserName());
+		try {
+			mgr.authenticate(new UsernamePasswordAuthenticationToken
+					(req.getUserName(), req.getPassword()));
+		} catch (BadCredentialsException e) {
+			throw new RuntimeException("Invalid Email or password");
 		}
-		return false ;
-	}
-	
+		// authentication successful : return JWT token to the client
+		UserDetails details = service.loadUserByUsername(req.getUserName());
+		return new AuthenticationResponse(utils.generateToken(details)) ;
+	}	
 }

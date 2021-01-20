@@ -15,28 +15,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "user_tbl")
-public class User {
+public class User extends Actor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id ;
-	private String name ;
-	private String email; 
-	private String password ;
-	private String phone_no ;
+	private String phoneNo ;
 	@OneToMany(mappedBy="user",fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("user")
 	private List<Ticket> tickets=new ArrayList<>();
 	
 	public User() {
-		super();
+		super.setRole(Role.USER);
 	}
-	public User( String name, String email, String password, String phone_no) {
-		super();
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.phone_no = phone_no;
+	public User( String name, String email, String password, String phoneNo) {
+		super(name,email,password,Role.USER);
+		this.phoneNo = phoneNo;
 	}
 	public Integer getId() {
 		return id;
@@ -44,29 +38,11 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getPhoneNo() {
+		return phoneNo;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getPhone_no() {
-		return phone_no;
-	}
-	public void setPhone_no(String phone_no) {
-		this.phone_no = phone_no;
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 	public List<Ticket> getTickes() {
 		return tickets;
@@ -86,8 +62,8 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", phone_no="
-				+ phone_no + "]";
+		return "User [id=" + id + ", name=" + ", email=" + ", password=" +  ", phone_no="
+				+ phoneNo + "]";
 	}
 
 }
