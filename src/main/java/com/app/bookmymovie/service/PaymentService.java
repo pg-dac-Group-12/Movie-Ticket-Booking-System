@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.app.bookmymovie.dto.RazorpayDTO;
 import com.app.bookmymovie.pojo.Ticket;
 import com.app.bookmymovie.pojo.Transaction;
+import com.app.bookmymovie.repository.TicketRepository;
 import com.app.bookmymovie.repository.TransactionRepository;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -24,6 +25,9 @@ public class PaymentService implements IPaymentService {
 
 	@Autowired
 	TransactionRepository transactionRepo ;
+	
+	@Autowired
+	TicketRepository ticketRepo ;
 	
 	@Autowired
 	HttpSession session ;
@@ -71,10 +75,14 @@ public class PaymentService implements IPaymentService {
 				
 		} catch (RazorpayException e) {
 			e.printStackTrace();
-		}
+		} 
+		
 		Ticket ticket = (Ticket) session.getAttribute("ticket");
+		ticket = ticketRepo.save(ticket);
+		System.out.println(ticket.toString());
 		Transaction transaction = createTransaction(razorpayDTO.getRazorpayPaymentId(),ticket);
 		ticket.setTransaction(transaction);
+		transaction = transactionRepo.save(transaction);
 		return ticket ;
 	}
 	
@@ -85,7 +93,7 @@ public class PaymentService implements IPaymentService {
 		transaction.setAmount(ticket.getAmount());
 		transaction.setTime(LocalDateTime.now());
 		transaction.setTransactionId(razorPaymentId);
-		transaction = transactionRepo.save(transaction);
+		
 		return transaction ;
 	}
 }

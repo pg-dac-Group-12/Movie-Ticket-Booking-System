@@ -2,8 +2,10 @@ package com.app.bookmymovie.pojo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
+import java.util.List;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,7 +33,9 @@ public class Ticket {
 	@JoinColumn(name = "userID")
 	@JsonIgnoreProperties("tickes")
 	private User user;
-	private Integer[] seats;
+	@Embedded
+	@ElementCollection(fetch=FetchType.LAZY)
+	private List<Seat> seats ;
 	private double amount;
 	private LocalTime time ;
 	private LocalDate date ;
@@ -41,7 +45,7 @@ public class Ticket {
 	private Transaction transaction;
 
 	public Ticket() {};
-	public Ticket( Shows show, User user, Integer[] seats, double amount,LocalDate date , LocalTime time , Transaction transaction) {
+	public Ticket( Shows show, User user, List<Seat> seats, double amount,LocalDate date , LocalTime time , Transaction transaction) {
 		super();
 		this.show = show;
 		this.user = user;
@@ -100,12 +104,12 @@ public class Ticket {
 		this.date = date;
 	}
 
-	public Integer[] getSeats() {
+	public List<Seat> getSeats() {
 		return seats;
 	}
 
 
-	public void setSeats(Integer[] seats) {
+	public void setSeats(List<Seat> seats) {
 		this.seats = seats;
 	}
 
@@ -137,7 +141,6 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", show=" + show + ", user=" + user + ", seats=" + Arrays.toString(seats)
-				+ ", amount=" + amount + ", transaction=" + transaction + "]";
+		return "Ticket [id=" + id + ", show=" + show + ", user=" + user	+ ", amount=" + amount + ", transaction=" + transaction + "]";
 	}
 }

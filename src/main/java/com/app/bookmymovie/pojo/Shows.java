@@ -50,22 +50,14 @@ public class Shows {
 	private LocalTime time;
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate date ;
-	
+	private LocalDate date;
 	private double price;
 	@Embedded
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch=FetchType.LAZY)
 	@CollectionTable(name = "show_seats_tbl" , joinColumns = @JoinColumn(name = "show_seats_id"))
-
 	private List<Seat> seatmap ;
 	public Shows() {
 		super();
-	}
-	public List<Seat> getSeatmap() {
-		return seatmap;
-	}
-	public void setSeatmap(List<Seat> seatmap) {
-		this.seatmap = seatmap;
 	}
 
 	public Shows(Audi audi ,Movie movie, LocalTime time, double price ) {
@@ -135,7 +127,7 @@ public class Shows {
 	public double getPrice() {
 		return price;
 	}
-	
+	 
 	public void setPrice(double price) {
 		this.price = price;
 	}
@@ -143,6 +135,17 @@ public class Shows {
 	public void addTicket(Ticket ticket) {
 		tickets.add(ticket);
 	}
+	
+
+	public List<Seat> getSeatmap() {
+		return seatmap;
+	}
+	
+	public void setSeatmap(List<Seat> seatmap) {
+		this.seatmap = seatmap;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Shows [id=" + id + ", audi=" + audi + ", movie=" + movie + ", time=" + time + ", price=" + price

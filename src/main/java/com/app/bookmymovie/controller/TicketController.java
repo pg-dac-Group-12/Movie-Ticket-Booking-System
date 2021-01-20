@@ -1,5 +1,7 @@
 package com.app.bookmymovie.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.bookmymovie.pojo.Seat;
 import com.app.bookmymovie.pojo.Ticket;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.service.TicketService;
@@ -21,13 +24,12 @@ import com.app.bookmymovie.service.TicketService;
 @RequestMapping("/ticket")
 public class TicketController {
 	@Autowired
-	TicketService ticketService ;
+	TicketService ticketService ; 
 	@GetMapping
 	public ResponseEntity<?> getAllTicketsByUserId(@RequestParam int userId) {
-		if(!ticketService.getAllTicketsByUserId(userId).isPresent())
+		if(ticketService.getAllTicketsByUserId(userId).isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-		return new ResponseEntity<>(ticketService.getAllTicketsByUserId(userId).get(), HttpStatus.OK);
+		return new ResponseEntity<>(ticketService.getAllTicketsByUserId(userId), HttpStatus.OK);
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getTicketById(@PathVariable int id) {
@@ -37,15 +39,15 @@ public class TicketController {
 		return new ResponseEntity<>(ticketService.getTicketById(id).get(), HttpStatus.OK);
 	}
 	
-	@PostMapping("/cancel")
-	public ResponseEntity<?> cancelTicket(@RequestBody Ticket ticket) {
-		if(!ticketService.cancelTicket(ticket))
+	@PostMapping("/cancel/{ticketId}")
+	public ResponseEntity<?> cancelTicket(@PathVariable int ticketId) {
+		if(!ticketService.cancelTicket(ticketId))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/{showId}")
-	public ResponseEntity<?> createTicket(@RequestParam Integer[] seats , @PathVariable int showId , HttpSession session) {
+	public ResponseEntity<?> createTicket(@RequestBody List<Seat> seats , @PathVariable int showId , HttpSession session) {
 		Ticket ticket = ticketService.createTicket(showId, seats, (User)session.getAttribute("user")) ;
 		if(ticket == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

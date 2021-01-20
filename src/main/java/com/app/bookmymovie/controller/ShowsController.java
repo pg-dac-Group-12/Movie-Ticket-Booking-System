@@ -1,6 +1,7 @@
 package com.app.bookmymovie.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.bookmymovie.pojo.Seat;
 import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.service.IShowService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,6 +39,7 @@ public class ShowsController {
 		
 		return new ResponseEntity<>(showService.getAllShowsByMovieIdAndDate(movieId,date).get(), HttpStatus.OK);
 	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getShowById(@PathVariable int id) {
 		if(!showService.getShowById(id).isPresent())
@@ -44,12 +47,21 @@ public class ShowsController {
 		
 		return new ResponseEntity<>(showService.getShowById(id).get(), HttpStatus.OK);
 	}
+	
 	@GetMapping("/theatre/{theatreID}")
 	public ResponseEntity<?> getAllShowsByTheatreId(@PathVariable int theatreID) {
 		if(!showService.getAllShowsByTheatreId(theatreID).isPresent())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 		return new ResponseEntity<>(showService.getAllShowsByTheatreId(theatreID).get(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/audi/{audiId}")
+	public ResponseEntity<?> getAllShowsByAudiId(@PathVariable int audiId) {
+		if(!showService.getAllShowsByAudiId(audiId).isPresent())
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
+		return new ResponseEntity<>(showService.getAllShowsByAudiId(audiId).get(), HttpStatus.OK);
 	}
 	@PostMapping()
 	public ResponseEntity<?> createShow(@RequestBody String showDtls,@RequestParam int theatreID, @RequestParam int audiID, @RequestParam int movieID) throws JsonMappingException, JsonProcessingException {
@@ -62,7 +74,7 @@ public class ShowsController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateShow(@RequestBody Shows show, @PathVariable int id) {
-		show = showService.updateShow(show, id);
+		show = showService.updateShow(show, id); 
 		if(show == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(show,HttpStatus.OK);
@@ -80,4 +92,22 @@ public class ShowsController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<> (HttpStatus.OK);
 	}
+	
+	@GetMapping("/{showId}/seatmap")
+	public ResponseEntity<?> getSeatMap(@PathVariable int showId){
+		System.out.println(showService.getSeatMap(showId));
+		if(showService.getSeatMap(showId).isEmpty())
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<> (showService.getSeatMap(showId), HttpStatus.OK);
+		
+	}
+	
+	@PutMapping("/{showId}/seatmap")
+	public ResponseEntity<?> updateSeatMap(@PathVariable int showId, @RequestBody List<Seat> seat){
+		if(!showService.updateSeatMap(showId, seat))
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<> (showService.getSeatMap(showId),HttpStatus.OK);
+		
+	}
+	
 }

@@ -4,7 +4,6 @@ package com.app.bookmymovie.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;

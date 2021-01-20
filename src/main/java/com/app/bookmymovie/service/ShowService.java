@@ -1,6 +1,7 @@
 package com.app.bookmymovie.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.bookmymovie.pojo.Audi;
 import com.app.bookmymovie.pojo.Movie;
+import com.app.bookmymovie.pojo.Seat;
 import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.Ticket;
@@ -69,14 +71,41 @@ public class ShowService implements IShowService {
 		
 		return showsRepo.findAllByTheatreId(theatreId);
 	}
+	
+	@Override
+	public Optional<Shows> getAllShowsByAudiId(int audiId) {
+		
+		return showsRepo.findAllShowsByAudiId(audiId);
+	}
 
 	@Override
 	public boolean cancelShow(Shows show) {
 		for(Ticket ticket : show.getTickets()) {
-			if(!ticketService.cancelTicket(ticket))
+			if(!ticketService.cancelTicket(ticket.getId()))
 				return false ;
 		}
 		showsRepo.delete(show);
-		return true;
+		return true; 
+	}
+	@Override
+	public List<Seat> getSeatMap(int id){
+		Optional<Shows> show = showsRepo.findById(id);
+		return (show.get().getSeatmap());	 
+	}
+	
+	@Override
+	public boolean updateSeatMap(int showId, List<Seat> seat) {
+		List<Seat> s = this.getShowById(showId).get().getSeatmap();
+		for(Seat bookedSeat : seat){
+			for(Seat seats : s) {
+				if(seats.getRowNumber() == bookedSeat.getRowNumber() && seats.getColNumber() == bookedSeat.getColNumber() ) {
+					seats.setSeatStatus();
+					
+					return true;
+				 }
+			}
+		}
+		
+		return false;
 	}
 }
