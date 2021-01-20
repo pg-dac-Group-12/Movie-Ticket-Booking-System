@@ -14,6 +14,7 @@ public interface IMovieService {
 	Movie updateMovie(int id, Movie movie);
 	List<Movie> getAllMovie();
 	Optional<Movie> getAllMovieById(int id);
+	void deleteUnscreenedMovies();
 	void deleteMovie(int id);
 
 }

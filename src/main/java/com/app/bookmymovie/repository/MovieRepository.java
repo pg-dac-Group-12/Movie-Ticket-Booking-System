@@ -10,7 +10,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer>{
 	
 	
 	Optional<Movie> findMovieById(int id);	
-	
-	
-	
+
+	void deleteByTotalShowsLessThanEqual(int totalshows);
 }

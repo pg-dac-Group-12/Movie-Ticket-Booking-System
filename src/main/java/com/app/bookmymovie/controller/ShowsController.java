@@ -80,12 +80,12 @@ public class ShowsController {
 		return new ResponseEntity<>(show,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteShow(@PathVariable int id) {
-		showService.deleteShow(id);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
+//	@DeleteMapping("/{id}")
+//	public ResponseEntity<?> deleteShow(@PathVariable int id) {
+//		showService.deleteDoneShowa();
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
+//	
 	@PostMapping("/cancel")
 	public ResponseEntity<?> cancelShow(@RequestBody Shows show) {
 		if(!showService.cancelShow(show))

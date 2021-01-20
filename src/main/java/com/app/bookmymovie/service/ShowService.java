@@ -62,8 +62,8 @@ public class ShowService implements IShowService {
 	}
 
 	@Override
-	public void deleteShow(int id) {
-		showsRepo.deleteById(id);
+	public void deleteDoneShows() {
+		showsRepo.deleteByDateBefore(LocalDate.now());
 	}
 
 	@Override

@@ -19,11 +19,12 @@ public class MovieService implements IMovieService {
 	@Autowired
 	MovieRepository movieRepo ;
 	
+	@Override
 	public Movie createMovie(Movie movie) {
 		return movieRepo.save(movie);
 		
 	}
-
+	@Override
 	public Movie updateMovie(int id, Movie movie) {
 		Optional<Movie> movieOld = movieRepo.findById(id);
 		if(!movieOld.isPresent())
@@ -31,27 +32,31 @@ public class MovieService implements IMovieService {
 		movie.setId(id);
 		return movieRepo.save(movie);
 	}
-
+	@Override
 	public Movie addIcon(int id, MultipartFile imageFile) {
 		Movie m = movieRepo.findById(id).get();
 		m.setIcon(imageFile.getName());
 		m.setIconContentType(imageFile.getContentType());
 		return movieRepo.save(m);
 	}
-	
+	@Override
 	public List<Movie> getAllMovie() {
 		return movieRepo.findAll();
 
 	}
-	
+	@Override
 	public Optional<Movie> getAllMovieById(int id){
 		return movieRepo.findById(id);
 		
 	}
-	
+
+	@Override
+	public void deleteUnscreenedMovies() {
+		movieRepo.deleteByTotalShowsLessThanEqual(0);
+	}
+	@Override
 	public void deleteMovie(int id) {
-		movieRepo.deleteById(id);
-		
+		movieRepo.deleteById(id);	
 	}
 
 
