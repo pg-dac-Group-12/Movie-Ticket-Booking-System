@@ -53,7 +53,7 @@ public class Seat implements Cloneable{
 	}
 	@Override
 	public String toString() {
-		return "Seat [row=" + rowNumber + ", column=" + colNumber + "]";
+		return rowNumber + " " + colNumber + " " ;
 	}
 	
 }
