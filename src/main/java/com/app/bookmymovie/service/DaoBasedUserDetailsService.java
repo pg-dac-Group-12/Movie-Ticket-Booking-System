@@ -2,6 +2,8 @@ package com.app.bookmymovie.service;
 
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,18 +29,22 @@ public class DaoBasedUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("Hello" + username);
-		User user = userDao.findByEmail(username).get();
-		if (user == null)
+		System.out.println("Hello wrld" + username);
+		Optional<User> user = userDao.findByEmail(username);
+		System.out.println("blah");
+		System.out.println(user);
+		if (!user.isPresent())
 		{
-			Theatre theatre = theatreDao.findByEmail(username).get();
-			if(theatre == null)
+			Optional<Theatre> theatre = theatreDao.findByEmail(username);
+			System.out.println(theatre);
+			if(!theatre.isPresent())
 				throw new UsernameNotFoundException("User by name " + username + " not found!");
-			return new CustomUserDetails(theatre);
+			return new CustomUserDetails(theatre.get());
 		}
+		System.out.println(user);
 		//to avoid lazy init exc
 		//System.out.println(user.getRoles().size());
-		return new CustomUserDetails(user);
+		return new CustomUserDetails(user.get());
 	}
 
 }

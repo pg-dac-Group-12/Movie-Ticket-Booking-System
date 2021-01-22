@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,11 +71,11 @@ public class AuthenticationService implements IAuthenticationService {
 
 	@Override
 	public AuthenticationResponse authenticateActor(AuthenticationRequest req) {
-		System.out.println(req.getPassword() + "User" + req.getUserName());
+		System.out.println(req.getPassword() + " User " + req.getUserName());
 		try {
 			mgr.authenticate(new UsernamePasswordAuthenticationToken
 					(req.getUserName(), req.getPassword()));
-		} catch (BadCredentialsException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Invalid Email or password");
 		}
 		// authentication successful : return JWT token to the client

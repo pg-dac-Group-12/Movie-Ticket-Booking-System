@@ -55,7 +55,7 @@ public class Shows {
 	@Embedded
 	@ElementCollection(fetch=FetchType.LAZY)
 	@CollectionTable(name = "show_seats_tbl" , joinColumns = @JoinColumn(name = "show_seats_id"))
-
+	
 	private List<Seat> seatmap ;
 	public Shows() {
 		super();

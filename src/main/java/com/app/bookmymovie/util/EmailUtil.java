@@ -25,7 +25,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 public class EmailUtil {
 
 //	private static JavaMailSender emailSender;
-
+	
 	public static BufferedImage generateQRCodeImage(String barcodeText) throws Exception {
 		QRCodeWriter barcodeWriter = new QRCodeWriter();
 		BitMatrix bitMatrix = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
@@ -39,8 +39,8 @@ public class EmailUtil {
 		emailSender.setHost("smtp.gmail.com");
 		emailSender.setPort(587);
 
-		emailSender.setUsername("{spring.mail.username}");
-		emailSender.setPassword("{spring.mail.password}");
+		emailSender.setUsername("kewalramanitanay48@gmail.com");
+		emailSender.setPassword("ib23ATYl1WG48");
 
 		Properties props = emailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");

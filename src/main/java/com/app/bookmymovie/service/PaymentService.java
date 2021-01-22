@@ -24,76 +24,78 @@ import com.razorpay.Utils;
 public class PaymentService implements IPaymentService {
 
 	@Autowired
-	TransactionRepository transactionRepo ;
-	
+	TransactionRepository transactionRepo;
+
 	@Autowired
-	TicketRepository ticketRepo ;
-	
+	TicketRepository ticketRepo;
+
 	@Autowired
-	HttpSession session ;
-	
+	HttpSession session;
+
 	@Autowired
-	TicketService ticketService ;
-	
+	TicketService ticketService;
+
 	@Override
 	public boolean refundPayment(Transaction transaction) {
 		/*
 		 * if(transaction == null) return false ;
 		 */
-		//TODO Payment Gateway Code 
+		// TODO Payment Gateway Code
 		System.out.println("Refund has been Initiated");
 		return true;
 	}
-	
+
 	@Override
 	public Order createOrder(double amount) {
 		try {
 			RazorpayClient razorpayClient = new RazorpayClient("rzp_test_l5ZltcixJREBlt", "pvtBGbaDW5i8HzU3lJpam0s1");
 			JSONObject orderRequest = new JSONObject();
-			orderRequest.put("amount", 50000); 
+			orderRequest.put("amount", 50000);
 			orderRequest.put("currency", "INR");
 			orderRequest.put("receipt", "order_rcptid_11");
 			Order order = razorpayClient.Orders.create(orderRequest);
-			return order ;
+			return order;
 		} catch (RazorpayException e) {
-		  System.out.println(e.getMessage());
-		  return null ;
+			System.out.println(e.getMessage());
+			return null;
 		}
 	}
+
 	@Override
 	public Ticket paymentSuccess(RazorpayDTO razorpayDTO) {
+
 		JSONObject options = new JSONObject();
 		options.put("razorpay_order_id", "<order_id>");
 		options.put("razorpay_payment_id", "<payment_id>");
 		options.put("razorpay_signature", "<signature>");
 		try {
-			if(!Utils.verifyPaymentSignature(options, "pvtBGbaDW5i8HzU3lJpam0s1")) {
+			if (!Utils.verifyPaymentSignature(options, "pvtBGbaDW5i8HzU3lJpam0s1")) {
 				ticketService.invalidateTicket();
 				session.removeAttribute("ticket");
-				return null ;
+				return null;
 			}
-				
+
 		} catch (RazorpayException e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 		Ticket ticket = (Ticket) session.getAttribute("ticket");
 		ticket = ticketRepo.save(ticket);
 		System.out.println(ticket.toString());
-		Transaction transaction = createTransaction(razorpayDTO.getRazorpayPaymentId(),ticket);
+		Transaction transaction = createTransaction(razorpayDTO.getRazorpayPaymentId(), ticket);
 		ticket.setTransaction(transaction);
 		transaction = transactionRepo.save(transaction);
-		return ticket ;
+		return ticket;
 	}
-	
+
 	@Override
-	public Transaction createTransaction(String razorPaymentId,Ticket ticket) {
-		Transaction transaction = new Transaction() ;
+	public Transaction createTransaction(String razorPaymentId, Ticket ticket) {
+		Transaction transaction = new Transaction();
 		transaction.addTicket(ticket);
 		transaction.setAmount(ticket.getAmount());
 		transaction.setTime(LocalDateTime.now());
 		transaction.setTransactionId(razorPaymentId);
-		
-		return transaction ;
+
+		return transaction;
 	}
 }

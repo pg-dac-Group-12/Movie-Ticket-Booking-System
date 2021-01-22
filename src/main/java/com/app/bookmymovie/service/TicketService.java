@@ -15,6 +15,7 @@ import com.app.bookmymovie.pojo.Ticket;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.repository.ShowsRepository;
 import com.app.bookmymovie.repository.TicketRepository;
+import com.app.bookmymovie.repository.UserRepository;
 
 @Service
 @Transactional
@@ -27,7 +28,8 @@ public class TicketService implements ITicketService{
 	ShowsRepository showRepo ;
 	@Autowired
 	IPaymentService paymentService;
-	
+	@Autowired
+	UserRepository userRepo;
 	@Override
 	public Optional<Ticket> getTicketById(int id) {
 		return ticketRepo.findById(id);
@@ -62,9 +64,10 @@ public class TicketService implements ITicketService{
 	}
 
 	@Override
-	public Ticket createTicket(int showId , List<Seat> seats, User user ) {
+	public Ticket createTicket(int showId , List<Seat> seats, String userName ) {
 		Ticket ticket = new Ticket() ;
 		Shows show = showRepo.findById(showId).get();
+		User user = userRepo.findByEmail(userName).get();
 		ticket.addShow(show);
 		double amount = seats.size() * show.getPrice();
 		ticket.setAmount(amount);

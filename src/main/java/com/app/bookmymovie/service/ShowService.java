@@ -45,11 +45,17 @@ public class ShowService implements IShowService {
 	@Override
 	public Shows createShow(Shows show, int theatreID, int audiID,  int movieID) {
 		Optional<Audi> audiOptional = audiRepo.findById(audiID);
+		
+		if(!audiOptional.isPresent()) {
+			System.out.println("Audi not found"); // for debuging purpose
+		}
+		Audi audi = audiOptional.get();
 		Theatre theatre = new Theatre();
 		theatre.setId(theatreID);
 		Movie movie = new Movie();
 		movie.setId(movieID);
-		show.setAudi(audiOptional.get());
+		show.setAudi(audi);
+		show.setSeatmap(audi.getSeatMap());
 		show.setTheatre(theatre);
 		show.setMovie(movie);
 		return showsRepo.save(show);
@@ -67,7 +73,7 @@ public class ShowService implements IShowService {
 	}
 
 	@Override
-	public Optional<Shows> getAllShowsByTheatreId(int theatreId) {
+	public List<Shows> getAllShowsByTheatreId(int theatreId) {
 		
 		return showsRepo.findAllByTheatreId(theatreId);
 	}

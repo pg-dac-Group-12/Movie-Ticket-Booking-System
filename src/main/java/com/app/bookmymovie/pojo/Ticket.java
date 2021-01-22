@@ -34,7 +34,7 @@ public class Ticket {
 	@JsonIgnoreProperties("tickes")
 	private User user;
 	@Embedded
-	@ElementCollection(fetch=FetchType.LAZY)
+	@ElementCollection(fetch=FetchType.EAGER)
 	private List<Seat> seats ;
 	private double amount;
 	private LocalTime time ;

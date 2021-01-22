@@ -11,7 +11,7 @@ public interface ITicketService {
 	Optional<Ticket> getTicketById(int id);
 	List<Ticket> getAllTicketsByUserId(int userId);
 	boolean cancelTicket(int ticketId);
-	Ticket createTicket(int showId, List<Seat> seats, User user);
+	Ticket createTicket(int showId, List<Seat> seats, String user);
 	Ticket saveTicket();
 	void invalidateTicket();
 }

@@ -34,6 +34,7 @@ public class TheatreService implements ITheatreService {
 
 	@Override
 	public Theatre createTheatre(Theatre theatre) {
+		theatre.getAudis().forEach( a -> a.setTheatre(theatre));
 		theatre.setPassword(encoder.encode(theatre.getPassword()));
 		Theatre theatreSaved = theatreRepo.save(theatre);
 		return theatreSaved;

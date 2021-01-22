@@ -50,10 +50,10 @@ public class ShowsController {
 	
 	@GetMapping("/theatre/{theatreID}")
 	public ResponseEntity<?> getAllShowsByTheatreId(@PathVariable int theatreID) {
-		if(!showService.getAllShowsByTheatreId(theatreID).isPresent())
+		if(showService.getAllShowsByTheatreId(theatreID).isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
-		return new ResponseEntity<>(showService.getAllShowsByTheatreId(theatreID).get(), HttpStatus.OK);
+		return new ResponseEntity<>(showService.getAllShowsByTheatreId(theatreID), HttpStatus.OK);
 	}
 	
 	@GetMapping("/audi/{audiId}")

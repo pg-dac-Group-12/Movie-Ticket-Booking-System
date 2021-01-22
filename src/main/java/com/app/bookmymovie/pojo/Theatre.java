@@ -27,6 +27,7 @@ public class Theatre extends Actor {
 	private List<Audi> audis = new ArrayList<>();
 
 	public Theatre() {
+		super.setRole(Role.THEATRE);
 	};
 
 	public Theatre(String name ,String email, String password, String city, String location) {
