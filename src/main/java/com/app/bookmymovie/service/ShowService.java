@@ -32,7 +32,7 @@ public class ShowService implements IShowService {
 	TicketService ticketService ;
 	
 	@Override
-	public Optional<Shows> getAllShowsByMovieIdAndDate(int id,  LocalDate date) {
+	public List<Shows> getAllShowsByMovieIdAndDate(int id,  LocalDate date) {
 		//return showsRepo.findAllByMovieIdAndDate(id,  java.sql.Date.valueOf(date));
 		return showsRepo.findAllByMovieIdAndDate(id, date);
 	}

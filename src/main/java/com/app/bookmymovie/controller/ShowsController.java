@@ -34,10 +34,10 @@ public class ShowsController {
 	public ResponseEntity<?> getAllShowsByMovieIdAndDate(@RequestParam int movieId, @RequestParam("date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 		
-		if(!showService.getAllShowsByMovieIdAndDate(movieId,date).isPresent())
+		if(showService.getAllShowsByMovieIdAndDate(movieId,date) == null)
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
-		return new ResponseEntity<>(showService.getAllShowsByMovieIdAndDate(movieId,date).get(), HttpStatus.OK);
+		return new ResponseEntity<>(showService.getAllShowsByMovieIdAndDate(movieId,date), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
