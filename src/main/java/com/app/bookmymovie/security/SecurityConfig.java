@@ -56,6 +56,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers(HttpMethod.GET,"/theatre/*[0-9]/audi/*").hasRole(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.GET,"/shows/*[0-9]/seatmap").permitAll().
 		antMatchers(HttpMethod.GET,"/shows/audi/*[0-9]").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers("/**").permitAll(). // if (frust == true){ uncomment}
+		antMatchers(HttpMethod.POST, "/user").permitAll().
+		antMatchers(HttpMethod.POST, "/shows").hasRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.PUT, "/shows/{id}").hasRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST, "/shows/cancel").hasRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST, "/theatre").hasRole(Role.THEATRE.toString()).
+		antMatchers("/theatre/*").hasRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET, "/payment/*").hasRole(Role.USER.toString()).
+		antMatchers("/ticket*").hasRole(Role.USER.toString()).
+		antMatchers(HttpMethod.POST,"/ticket/{showId}").hasRole(Role.USER.toString()).
+		antMatchers(HttpMethod.POST,"/ticket/cancel/{ticketId}").hasRole(Role.USER.toString()).
+		antMatchers("/user*").hasRole(Role.USER.toString()).
+		antMatchers(HttpMethod.GET,"/shows/audi/{audiId}").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/theatre/{theatreID}").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/ticket/{id}").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
 		antMatchers(HttpMethod.POST,"/password/change").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
 		antMatchers(HttpMethod.POST, "/shows/cancel").hasRole(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.GET, "/payment/success").hasRole(Role.USER.toString()).

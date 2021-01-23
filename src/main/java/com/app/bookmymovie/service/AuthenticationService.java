@@ -11,11 +11,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.bookmymovie.dto.AuthenticationRequest;
 import com.app.bookmymovie.dto.AuthenticationResponse;
+import com.app.bookmymovie.pojo.Actor;
 import com.app.bookmymovie.pojo.Role;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.User;
@@ -80,6 +82,23 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 		// authentication successful : return JWT token to the client
 		UserDetails details = service.loadUserByUsername(req.getUserName());
-		return new AuthenticationResponse(utils.generateToken(details)) ;
-	}	
+		Actor usr_details = loadActorByUsername(req.getUserName());
+		return new AuthenticationResponse(utils.generateToken(details), usr_details) ;
+	}
+	
+
+	public Actor loadActorByUsername(String username) {
+		System.out.println("Hello" + username);
+		User user = userRepo.findByEmail(username).get();
+		if (user == null)
+		{
+			Theatre theatre = theatreRepo.findByEmail(username).get();
+			if(theatre == null)
+				throw new UsernameNotFoundException("User by name " + username + " not found!");
+			return theatre;
+		}
+		//to avoid lazy init exc
+		//System.out.println(user.getRoles().size());
+		return user;
+	}
 }

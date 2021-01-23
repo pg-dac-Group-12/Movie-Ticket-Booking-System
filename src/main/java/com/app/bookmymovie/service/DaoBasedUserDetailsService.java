@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.bookmymovie.pojo.Actor;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.repository.TheatreRepository;
@@ -46,5 +47,6 @@ public class DaoBasedUserDetailsService implements UserDetailsService {
 		//System.out.println(user.getRoles().size());
 		return new CustomUserDetails(user.get());
 	}
+	
 
 }

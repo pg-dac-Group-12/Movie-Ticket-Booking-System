@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import com.app.bookmymovie.dto.AuthenticationResponse;
 import com.app.bookmymovie.service.IAuthenticationService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
 	@Autowired
 	IAuthenticationService authenticationService;
@@ -23,7 +25,6 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> authenticateActor(@RequestBody AuthenticationRequest req) {
 		return new ResponseEntity<>(authenticationService.authenticateActor(req), HttpStatus.OK);
-		
 	}
 	
 	@GetMapping("/logoff")
