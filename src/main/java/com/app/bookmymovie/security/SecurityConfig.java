@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 		http.cors().and().csrf().disable().authorizeRequests().
 
+
 		/*
 		 * antMatchers("/swagger-ui.html*").permitAll().
 		 * antMatchers("/favicon.ico").permitAll().
@@ -76,6 +77,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers(HttpMethod.GET, "/payment/success").hasRole(Role.USER.toString()).
 		antMatchers("/user/*[0-9]").hasRole(Role.USER.toString()).
 		antMatchers(HttpMethod.GET,"/user").hasRole(Role.USER.toString()).
+
+		antMatchers("/**").permitAll().
+
 		antMatchers(HttpMethod.POST,"/user").permitAll().
 		antMatchers(HttpMethod.POST,"/ticket/*[0-9]").hasRole(Role.USER.toString()).
 		antMatchers(HttpMethod.GET,"/ticket/*[0-9]").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
@@ -89,6 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers(HttpMethod.GET,"/movie/*[0-9]").permitAll().
 		antMatchers(HttpMethod.GET,"/movie").permitAll().
 		antMatchers("/login").permitAll().
+
 		antMatchers("/password/*").permitAll().	
 		antMatchers(HttpMethod.GET,"/shows").permitAll().
 		antMatchers(HttpMethod.GET,"/shows/{id}").permitAll().
@@ -104,6 +109,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				 * application to Spring Boot application.
 				 */
 
+
+		antMatchers("/password/*").permitAll().
+		antMatchers("/logoff").permitAll().
+		antMatchers(HttpMethod.GET,"/movie").permitAll().
+		antMatchers(HttpMethod.GET, "/movie/id").permitAll().
+		antMatchers(HttpMethod.GET, "/shows").permitAll().
+		antMatchers(HttpMethod.GET, "/shows/id").permitAll().
+		antMatchers(HttpMethod.GET, "/shows/showId/seatmap").permitAll().
+		antMatchers(HttpMethod.GET,"/shows/audi/audiID").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/theatre/theatreID").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/ticket/id").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers("/movie").hasAnyRole(Role.SITE.toString()).
+		antMatchers("/movie/*").hasAnyRole(Role.SITE.toString()).
+		antMatchers(HttpMethod.POST,"/shows").hasAnyRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.PUT,"/shows/id").hasAnyRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST,"/shows/cancel").hasAnyRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST,"/theatre").hasAnyRole(Role.THEATRE.toString()).
+		antMatchers("/theatre/*").hasAnyRole(Role.THEATRE.toString()).
+		antMatchers("/payment/*").hasAnyRole(Role.USER.toString()).
+		antMatchers("/ticket").hasAnyRole(Role.USER.toString()).
+		antMatchers("/ticket/*").hasAnyRole(Role.USER.toString()).	
 		antMatchers(HttpMethod.OPTIONS, "/**").permitAll().
 
 		anyRequest().authenticated().and().sessionManagement().

@@ -1,6 +1,5 @@
 package com.app.bookmymovie.controller;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,17 +41,27 @@ public class MovieController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(movie, HttpStatus.CREATED);
 	}
-
+ 
 	@PostMapping("/upload/{id}")
-	public ResponseDTO fileUploadWithParams(@PathVariable int id, @RequestParam MultipartFile imageFile) {
-		movieService.addIcon(id, imageFile);
-		try {
-		imageFile.transferTo(new File(location, imageFile.getOriginalFilename()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new ResponseDTO("File uploaded :" + imageFile.getOriginalFilename() + " @ ", LocalDateTime.now());
+	public ResponseDTO fileUploadWithParams(@PathVariable int id, @RequestParam List<MultipartFile> imageFile) {
+		
+		for (MultipartFile m : imageFile) {
+			System.out.println(m.getOriginalFilename());
+			double size = m.getSize();
+	        double megabytes = (size / (1024*1024));
+	        if(megabytes > 5) {
+	        	return new ResponseDTO("File not  uploaded :" + m.getOriginalFilename() + " @ ", LocalDateTime.now());				
+	        }
+	        else {
+	        	movieService.addIcon(id, m);
+	        	System.out.println("he1...");
+	        	//return new ResponseDTO("File uploaded :" + m.getOriginalFilename() + " @ ", LocalDateTime.now());
+	        }     
+		 	}
+		 	return new ResponseDTO("File uploaded :" + " @ ", LocalDateTime.now());
 	}
+	
+	
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateMovie(@PathVariable int id, @RequestBody Movie movie) {

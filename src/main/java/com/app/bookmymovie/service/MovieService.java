@@ -1,5 +1,9 @@
 package com.app.bookmymovie.service;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,13 +36,26 @@ public class MovieService implements IMovieService {
 		movie.setId(id);
 		return movieRepo.save(movie);
 	}
-	@Override
+	@Override 
 	public Movie addIcon(int id, MultipartFile imageFile) {
+		
+		File file = new File("/home/jatin/Desktop/"+id+"/");
+		file.mkdir();
+        String fileName = imageFile.getOriginalFilename();
+        String filePath = file + "/" + fileName;
+       
+        	try {
+				Files.copy(imageFile.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+				} catch (Exception e) {
+						System.out.println("error");
+				}
 		Movie m = movieRepo.findById(id).get();
-		m.setIcon(imageFile.getName());
 		m.setIconContentType(imageFile.getContentType());
+		
+		m.setIcon(imageFile.getOriginalFilename());
 		return movieRepo.save(m);
 	}
+	
 	@Override
 	public List<Movie> getAllMovie() {
 		return movieRepo.findAll();
