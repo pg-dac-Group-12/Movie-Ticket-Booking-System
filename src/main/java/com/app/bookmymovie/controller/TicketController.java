@@ -2,12 +2,11 @@ package com.app.bookmymovie.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.bookmymovie.pojo.Seat;
 import com.app.bookmymovie.pojo.Ticket;
-import com.app.bookmymovie.pojo.User;
 import com.app.bookmymovie.service.TicketService;
 
 @RestController
 @RequestMapping("/ticket")
+@CrossOrigin("http://localhost:4200")
 public class TicketController {
 	@Autowired
 	TicketService ticketService ; 

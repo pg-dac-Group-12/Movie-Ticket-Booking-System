@@ -89,16 +89,16 @@ public class AuthenticationService implements IAuthenticationService {
 
 	public Actor loadActorByUsername(String username) {
 		System.out.println("Hello" + username);
-		User user = userRepo.findByEmail(username).get();
-		if (user == null)
+		Optional<User> userOptional = userRepo.findByEmail(username);
+		if (!userOptional.isPresent())
 		{
-			Theatre theatre = theatreRepo.findByEmail(username).get();
-			if(theatre == null)
+			Optional<Theatre> theatreOptional= theatreRepo.findByEmail(username);
+			if(!theatreOptional.isPresent())
 				throw new UsernameNotFoundException("User by name " + username + " not found!");
-			return theatre;
+			return theatreOptional.get();
 		}
 		//to avoid lazy init exc
 		//System.out.println(user.getRoles().size());
-		return user;
+		return userOptional.get();
 	}
 }
