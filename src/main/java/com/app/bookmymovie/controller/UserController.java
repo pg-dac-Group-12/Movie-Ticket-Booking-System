@@ -20,7 +20,7 @@ import com.app.bookmymovie.service.IUserService;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("http://localhost:4200")
 public class UserController {
 	@Autowired
 	IUserService userService ;

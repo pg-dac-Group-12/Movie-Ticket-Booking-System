@@ -17,7 +17,7 @@ import com.app.bookmymovie.dto.AuthenticationResponse;
 import com.app.bookmymovie.service.IAuthenticationService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("http://localhost:4200")
 public class AuthenticationController {
 	@Autowired
 	IAuthenticationService authenticationService;
