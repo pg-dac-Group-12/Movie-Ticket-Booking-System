@@ -84,7 +84,8 @@ public class ShowsController {
 //		showService.deleteDoneShowa();
 //		return new ResponseEntity<>(HttpStatus.OK);
 //	}
-//	
+//	|             2 | b        | N         |        1 |
+
 	@PostMapping("/cancel")
 	public ResponseEntity<?> cancelShow(@RequestBody Shows show) {
 		if(!showService.cancelShow(show))
@@ -103,7 +104,7 @@ public class ShowsController {
 	
 	@PutMapping("/{showId}/seatmap")
 	public ResponseEntity<?> updateSeatMap(@PathVariable int showId, @RequestBody List<Seat> seat){
-		if(!showService.updateSeatMap(showId, seat, false))
+		if(!showService.updateSeatMap(showId, seat, true))
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<> (showService.getSeatMap(showId),HttpStatus.OK);
 		

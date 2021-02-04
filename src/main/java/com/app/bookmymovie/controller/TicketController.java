@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.bookmymovie.pojo.Seat;
-import com.app.bookmymovie.pojo.Ticket;
 import com.app.bookmymovie.pojo.TicketSession;
 import com.app.bookmymovie.service.TicketService;
 
@@ -53,5 +52,11 @@ public class TicketController {
 		if(tempTicket == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(tempTicket ,HttpStatus.OK);
+	}
+	
+	@GetMapping("/invalidate/{ticketid}")
+	public ResponseEntity<?> invalidateTicket(@PathVariable int ticketid){
+		ticketService.invalidateTicket(ticketid);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
