@@ -28,6 +28,7 @@ public class PaymentService implements IPaymentService {
 
 	@Autowired
 	TicketRepository ticketRepo;
+	
 
 	@Autowired
 	HttpSession session;
@@ -62,7 +63,7 @@ public class PaymentService implements IPaymentService {
 	}
 
 	@Override
-	public Ticket paymentSuccess(RazorpayDTO razorpayDTO) {
+	public Ticket paymentSuccess(RazorpayDTO razorpayDTO , int tempTicketId , String userName ) {
 
 		JSONObject options = new JSONObject();
 		options.put("razorpay_order_id", "<order_id>");
@@ -70,7 +71,7 @@ public class PaymentService implements IPaymentService {
 		options.put("razorpay_signature", "<signature>");
 		try {
 			if (!Utils.verifyPaymentSignature(options, "pvtBGbaDW5i8HzU3lJpam0s1")) {
-				ticketService.invalidateTicket();
+				ticketService.invalidateTicket(tempTicketId);
 				session.removeAttribute("ticket");
 				return null;
 			}
@@ -78,8 +79,8 @@ public class PaymentService implements IPaymentService {
 		} catch (RazorpayException e) {
 			e.printStackTrace();
 		}
-
-		Ticket ticket = (Ticket) session.getAttribute("ticket");
+		
+		Ticket ticket = ticketService.saveTicket(tempTicketId, userName);
 		ticket = ticketRepo.save(ticket);
 		System.out.println(ticket.toString());
 		Transaction transaction = createTransaction(razorpayDTO.getRazorpayPaymentId(), ticket);

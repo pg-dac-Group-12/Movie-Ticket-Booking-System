@@ -103,7 +103,7 @@ public class ShowsController {
 	
 	@PutMapping("/{showId}/seatmap")
 	public ResponseEntity<?> updateSeatMap(@PathVariable int showId, @RequestBody List<Seat> seat){
-		if(!showService.updateSeatMap(showId, seat))
+		if(!showService.updateSeatMap(showId, seat, false))
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<> (showService.getSeatMap(showId),HttpStatus.OK);
 		

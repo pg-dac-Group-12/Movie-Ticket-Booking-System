@@ -100,12 +100,12 @@ public class ShowService implements IShowService {
 	}
 	
 	@Override
-	public boolean updateSeatMap(int showId, List<Seat> seat) {
+	public boolean updateSeatMap(int showId, List<Seat> seat, boolean status) {
 		List<Seat> s = this.getShowById(showId).get().getSeatmap();
 		for(Seat bookedSeat : seat){
 			for(Seat seats : s) {
 				if(seats.getRowNumber() == bookedSeat.getRowNumber() && seats.getColNumber() == bookedSeat.getColNumber() ) {
-					seats.setSeatStatus();
+					seats.setSeatStatus(status);
 					
 					return true;
 				 }

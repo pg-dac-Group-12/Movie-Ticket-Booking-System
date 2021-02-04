@@ -1,9 +1,9 @@
 package com.app.bookmymovie.pojo;
 
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Type;
 
 @Embeddable
@@ -40,8 +40,8 @@ public class Seat implements Cloneable{
 		this.colNumber = column;
 	}
 	
-	public void setSeatStatus() {
-		this.isBooked = true ;		
+	public void setSeatStatus(boolean status) {
+		this.isBooked = status;		
 	}
 	
 	public boolean  getSeatStatus() {

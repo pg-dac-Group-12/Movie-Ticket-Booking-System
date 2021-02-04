@@ -17,7 +17,7 @@ public interface IShowService {
 	void deleteDoneShows();
 	boolean cancelShow(Shows show);
 	List<Seat> getSeatMap(int id);
-	boolean updateSeatMap(int showId, List<Seat> seat);
+	boolean updateSeatMap(int showId, List<Seat> seat, boolean status);
 	
 	//TODO updateSeatmap
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.bookmymovie.pojo.Seat;
 import com.app.bookmymovie.pojo.Ticket;
+import com.app.bookmymovie.pojo.TicketSession;
 import com.app.bookmymovie.service.TicketService;
 
 @RestController
@@ -48,9 +49,9 @@ public class TicketController {
 	
 	@PostMapping("/{showId}")
 	public ResponseEntity<?> createTicket(@RequestBody List<Seat> seats , @PathVariable int showId, @AuthenticationPrincipal String user) {
-		Ticket ticket = ticketService.createTicket(showId, seats, user) ;
-		if(ticket == null)
+		TicketSession tempTicket= ticketService.createTicket(showId, seats, user) ;
+		if(tempTicket == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<>(ticket ,HttpStatus.OK);
+		return new ResponseEntity<>(tempTicket ,HttpStatus.OK);
 	}
 }
