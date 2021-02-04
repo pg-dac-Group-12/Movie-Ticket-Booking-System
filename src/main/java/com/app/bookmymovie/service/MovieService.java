@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.app.bookmymovie.pojo.Movie;
 import com.app.bookmymovie.repository.MovieRepository;
@@ -36,26 +37,28 @@ public class MovieService implements IMovieService {
 		movie.setId(id);
 		return movieRepo.save(movie);
 	}
+	
 	@Override 
-	public Movie addIcon(int id, MultipartFile imageFile) {
+	public Movie addIcon(int id, MultipartFile imageFile, int fileName) {
 		
 		File file = new File("/home/jatin/Desktop/"+id+"/");
 		file.mkdir();
-        String fileName = imageFile.getOriginalFilename();
-        String filePath = file + "/" + fileName;
-       
+        String filePath = file + "/" + fileName ;
         	try {
 				Files.copy(imageFile.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 				} catch (Exception e) {
 						System.out.println("error");
 				}
 		Movie m = movieRepo.findById(id).get();
-		m.setIconContentType(imageFile.getContentType());
-		
+		m.setIconContentType(imageFile.getContentType().substring(6));
 		m.setIcon(imageFile.getOriginalFilename());
+				
 		return movieRepo.save(m);
 	}
 	
+	public List<Movie> getIconContentType(int id) {
+		return movieRepo.findIconContentTypeById(id);
+	}
 	@Override
 	public List<Movie> getAllMovie() {
 		return movieRepo.findAll();

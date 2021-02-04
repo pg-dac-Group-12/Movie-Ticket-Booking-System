@@ -1,12 +1,19 @@
 package com.app.bookmymovie.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImageDTO {
 
 	private String name, type;
-	private byte[] data;
+	//private List<byte[]> data = new ArrayList<byte[]>();
+	private byte[] data ;
+	//byte[] data;
 
-	public ImageDTO() {
-		// TODO Auto-generated constructor stub
+	public ImageDTO(byte[] data, String type) {
+		this.data = data ;
+		//System.out.println(data.getContentType());
+		this .type = type ;
 	}
 
 	public String getName() {
@@ -30,7 +37,7 @@ public class ImageDTO {
 	}
 
 	public void setData(byte[] data) {
-		this.data = data;
+		this.data = data ;
 	}
 
 }

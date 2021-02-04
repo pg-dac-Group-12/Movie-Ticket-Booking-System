@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @ComponentScan(basePackages="com.app.*")
-public class BookMyMovieApplication {
+public class BookMyMovieApplication { 
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookMyMovieApplication.class, args);
