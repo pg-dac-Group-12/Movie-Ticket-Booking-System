@@ -13,7 +13,7 @@ public class ImageDTO {
 	public ImageDTO(byte[] data, String type) {
 		this.data = data ;
 		//System.out.println(data.getContentType());
-		this .type = type ;
+		this.type = type ;
 	}
 
 	public String getName() {

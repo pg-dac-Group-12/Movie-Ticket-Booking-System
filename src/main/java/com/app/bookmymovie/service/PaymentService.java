@@ -64,11 +64,11 @@ public class PaymentService implements IPaymentService {
 
 	@Override
 	public Ticket paymentSuccess(RazorpayDTO razorpayDTO , int tempTicketId , String userName ) {
-
+		System.out.println(razorpayDTO);
 		JSONObject options = new JSONObject();
-		options.put("razorpay_order_id", "<order_id>");
-		options.put("razorpay_payment_id", "<payment_id>");
-		options.put("razorpay_signature", "<signature>");
+		options.put("razorpay_order_id", razorpayDTO.getRazorpayOrderId());
+		options.put("razorpay_payment_id", razorpayDTO.getRazorpayPaymentId());
+		options.put("razorpay_signature", razorpayDTO.getRazorpaySignature());
 		try {
 			if (!Utils.verifyPaymentSignature(options, "pvtBGbaDW5i8HzU3lJpam0s1")) {
 				ticketService.invalidateTicket(tempTicketId);

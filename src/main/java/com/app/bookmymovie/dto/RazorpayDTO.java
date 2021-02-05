@@ -1,6 +1,11 @@
 package com.app.bookmymovie.dto;
 
 public class RazorpayDTO {
+	@Override
+	public String toString() {
+		return "RazorpayDTO [razorpayPaymentId=" + razorpayPaymentId + ", razorpayOrderId=" + razorpayOrderId
+				+ ", razorpaySignature=" + razorpaySignature + "]";
+	}
 	String razorpayPaymentId ;
 	String razorpayOrderId ;
 	String razorpaySignature ;
