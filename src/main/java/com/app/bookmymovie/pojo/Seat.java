@@ -40,11 +40,11 @@ public class Seat implements Cloneable{
 		this.colNumber = column;
 	}
 	
-	public void setSeatStatus(boolean status) {
+	public void setIsBooked(boolean status) {
 		this.isBooked = status;		
 	}
 	
-	public boolean  getSeatStatus() {
+	public boolean getIsBooked() {
 		return this.isBooked ;
 	}
 	

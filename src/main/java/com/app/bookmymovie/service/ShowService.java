@@ -110,7 +110,7 @@ public class ShowService implements IShowService {
 		for(Seat bookedSeat : seat){
 			for(Seat seats : s) {
 				if(seats.getRowNumber() == bookedSeat.getRowNumber() && seats.getColNumber() == bookedSeat.getColNumber() ) {
-					seats.setSeatStatus(status);
+					seats.setIsBooked(status);
 					
 					return true;
 				 }
