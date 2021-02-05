@@ -94,6 +94,6 @@ public class TheatreService implements ITheatreService {
 
 	@Override
 	public void deleteAudi(int theatreID, int audiID) {
-		audiRepo.delete(audiRepo.findById(audiID).get());
+		audiRepo.deleteById(audiID);
 	}
 }

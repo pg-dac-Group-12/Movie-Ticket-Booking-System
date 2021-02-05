@@ -85,13 +85,18 @@ public class ShowService implements IShowService {
 	}
 
 	@Override
-	public boolean cancelShow(Shows show) {
-		for(Ticket ticket : show.getTickets()) {
+	public boolean cancelShow(int showId) {
+		Optional<Shows> optionalShow = showsRepo.findById(showId);
+		if(optionalShow.isPresent()) {
+		for(Ticket ticket : optionalShow.get().getTickets()) {
 			if(!ticketService.cancelTicket(ticket.getId()))
 				return false ;
 		}
-		showsRepo.delete(show);
+		showsRepo.delete(optionalShow.get());
 		return true; 
+		}else {
+			return false;
+		}
 	}
 	@Override
 	public List<Seat> getSeatMap(int id){

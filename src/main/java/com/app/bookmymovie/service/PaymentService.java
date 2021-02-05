@@ -51,10 +51,11 @@ public class PaymentService implements IPaymentService {
 		try {
 			RazorpayClient razorpayClient = new RazorpayClient("rzp_test_l5ZltcixJREBlt", "pvtBGbaDW5i8HzU3lJpam0s1");
 			JSONObject orderRequest = new JSONObject();
-			orderRequest.put("amount", 50000);
+			orderRequest.put("amount", amount);
 			orderRequest.put("currency", "INR");
 			orderRequest.put("receipt", "order_rcptid_11");
 			Order order = razorpayClient.Orders.create(orderRequest);
+			
 			return order;
 		} catch (RazorpayException e) {
 			System.out.println(e.getMessage());

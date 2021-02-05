@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,13 +85,12 @@ public class ShowsController {
 //		showService.deleteDoneShowa();
 //		return new ResponseEntity<>(HttpStatus.OK);
 //	}
-//	|             2 | b        | N         |        1 |
-
-	@PostMapping("/cancel")
-	public ResponseEntity<?> cancelShow(@RequestBody Shows show) {
-		if(!showService.cancelShow(show))
+//	
+	@DeleteMapping("/cancel/{showId}")
+	public ResponseEntity<?> cancelShow(@PathVariable int showId) {
+		if(!showService.cancelShow(showId))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<> (HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/{showId}/seatmap")
