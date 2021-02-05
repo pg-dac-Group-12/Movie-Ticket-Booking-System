@@ -78,7 +78,8 @@ public class AuthenticationService implements IAuthenticationService {
 			mgr.authenticate(new UsernamePasswordAuthenticationToken
 					(req.getUserName(), req.getPassword()));
 		} catch (Exception e) {
-			throw new RuntimeException("Invalid Email or password");
+			//throw new RuntimeException("Invalid Email or password");
+			return null ;
 		}
 		// authentication successful : return JWT token to the client
 		UserDetails details = service.loadUserByUsername(req.getUserName());
@@ -94,7 +95,7 @@ public class AuthenticationService implements IAuthenticationService {
 		{
 			Optional<Theatre> theatreOptional= theatreRepo.findByEmail(username);
 			if(!theatreOptional.isPresent())
-				throw new UsernameNotFoundException("User by name " + username + " not found!");
+				//throw new UsernameNotFoundException("User by name " + username + " not found!");
 			return theatreOptional.get();
 		}
 		//to avoid lazy init exc

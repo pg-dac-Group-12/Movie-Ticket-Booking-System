@@ -39,7 +39,8 @@ public class DaoBasedUserDetailsService implements UserDetailsService {
 			Optional<Theatre> theatre = theatreDao.findByEmail(username);
 			System.out.println(theatre);
 			if(!theatre.isPresent())
-				throw new UsernameNotFoundException("User by name " + username + " not found!");
+				//throw new UsernameNotFoundException("User by name " + username + " not found!");
+				return null ;
 			return new CustomUserDetails(theatre.get());
 		}
 		System.out.println(user);
