@@ -29,7 +29,7 @@ public class ScheduledTasks {
 		movieService.deleteUnscreenedMovies();
 	}
 	
-	@Scheduled(fixedRate = 1000)
+	@Scheduled(fixedRate = 60000)
 	public void deleteTempTickets() {
 		ticketService.deleteTempTickets();
 	}
