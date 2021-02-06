@@ -20,64 +20,67 @@ import com.app.bookmymovie.repository.MovieRepository;
 @Service
 @Transactional
 public class MovieService implements IMovieService {
-	
+
 	@Autowired
-	MovieRepository movieRepo ;
-	
+	MovieRepository movieRepo;
+
 	@Override
 	public Movie createMovie(Movie movie) {
 		return movieRepo.save(movie);
-		
+
 	}
+
 	@Override
 	public Movie updateMovie(int id, Movie movie) {
 		Optional<Movie> movieOld = movieRepo.findById(id);
-		if(!movieOld.isPresent())
+		if (!movieOld.isPresent())
 			return null;
 		movie.setId(id);
 		return movieRepo.save(movie);
 	}
-	 
-	@Override 
+
+	@Override
 	public Movie addIcon(int id, MultipartFile imageFile, int fileName) {
-		
-		File file = new File("./src/main/resources/public/"+id+"/");
+
+		File file = new File("./src/main/resources/public/" + id + "/");
 		file.mkdir();
-        String filePath = file + "/" + fileName + "." + imageFile.getContentType().substring(6);
-        	try {
-				Files.copy(imageFile.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-				} catch (Exception e) {
-						System.out.println("error");
-				}
+		String filePath = file + "/" + fileName + "." + imageFile.getContentType().substring(6);
+		try {
+			Files.copy(imageFile.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+		} catch (Exception e) {
+			System.out.println("error");
+		}
 		Movie m = movieRepo.findById(id).get();
 		m.setIconContentType(imageFile.getContentType().substring(6));
 		m.setIcon(imageFile.getOriginalFilename());
-				
+
 		return movieRepo.save(m);
 	}
-	
+
 	public List<Movie> getIconContentType(int id) {
 		return movieRepo.findIconContentTypeById(id);
 	}
+
 	@Override
 	public List<Movie> getAllMovie() {
 		return movieRepo.findAll();
 
 	}
+
 	@Override
-	public Optional<Movie> getAllMovieById(int id){
+	public Optional<Movie> getAllMovieById(int id) {
 		return movieRepo.findById(id);
-		
+
 	}
 
 	@Override
 	public void deleteUnscreenedMovies() {
 		movieRepo.deleteByTotalShowsLessThanEqual(0);
 	}
+
 	@Override
 	public void deleteMovie(int id) {
-		movieRepo.deleteById(id);	
+		movieRepo.deleteById(id);
 	}
-
 
 }
