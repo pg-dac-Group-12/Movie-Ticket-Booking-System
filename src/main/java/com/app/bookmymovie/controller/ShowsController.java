@@ -59,10 +59,10 @@ public class ShowsController {
 	
 	@GetMapping("/audi/{audiId}")
 	public ResponseEntity<?> getAllShowsByAudiId(@PathVariable int audiId) {
-		if(!showService.getAllShowsByAudiId(audiId).isPresent())
+		List<Shows> showList = showService.getAllShowsByAudiId(audiId);
+		if(showList == null)
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-		return new ResponseEntity<>(showService.getAllShowsByAudiId(audiId).get(), HttpStatus.OK);
+		return new ResponseEntity<>(showList, HttpStatus.OK);
 	}
 	@PostMapping()
 	public ResponseEntity<?> createShow(@RequestBody Shows show,@RequestParam int theatreID, @RequestParam int audiID, @RequestParam int movieID) throws JsonMappingException, JsonProcessingException {

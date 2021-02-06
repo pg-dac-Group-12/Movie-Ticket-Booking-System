@@ -18,7 +18,7 @@ public interface ShowsRepository extends JpaRepository<Shows,Integer>{
 	List<Shows> findAllByMovieIdAndDate(int id, LocalDate date);
 	
 	List<Shows> findAllByTheatreId( int theatreId);
-	Optional<Shows> findAllShowsByAudiId(int audiId);
+	List<Shows> findAllShowsByAudiId(int audiId);
 
 	
 	@Transactional

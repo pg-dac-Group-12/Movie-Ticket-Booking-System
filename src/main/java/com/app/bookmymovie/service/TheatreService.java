@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.bookmymovie.pojo.Audi;
+import com.app.bookmymovie.pojo.Shows;
 import com.app.bookmymovie.pojo.Theatre;
 import com.app.bookmymovie.repository.AudiRepository;
 import com.app.bookmymovie.repository.TheatreRepository;
@@ -23,7 +24,8 @@ public class TheatreService implements ITheatreService {
 	private PasswordEncoder encoder ;
 	@Autowired
 	private AudiRepository audiRepo;
-	
+	@Autowired
+	private ShowService showsService;
 	@Override
 	public Theatre getTheatre(int id) {
 		Optional<Theatre> theatre = theatreRepo.findById(id);
@@ -94,6 +96,12 @@ public class TheatreService implements ITheatreService {
 
 	@Override
 	public void deleteAudi(int theatreID, int audiID) {
+		List<Shows> showList =showsService.getAllShowsByAudiId(audiID);
+		if(showList != null) {
+			for (Shows s : showList) {
+				showsService.cancelShow(s.getId());
+			}
+		}
 		audiRepo.deleteById(audiID);
 	}
 }

@@ -79,9 +79,11 @@ public class ShowService implements IShowService {
 	}
 	
 	@Override
-	public Optional<Shows> getAllShowsByAudiId(int audiId) {
-		
+	public List<Shows> getAllShowsByAudiId(int audiId) {	
 		return showsRepo.findAllShowsByAudiId(audiId);
+//		if(!showsListOptional.isPresent())
+//			return null;
+//		return showsListOptional.get();
 	}
 
 	@Override
