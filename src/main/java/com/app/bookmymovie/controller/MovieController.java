@@ -37,7 +37,7 @@ import com.app.bookmymovie.service.IMovieService;
 public class MovieController {
 	@Value("${file.upload.location}")
 	private String location;
-	@Autowired
+	@Autowired 
 	IMovieService movieService ;
 	
 	
@@ -78,7 +78,7 @@ public class MovieController {
 			//for(;fileName < 100;fileName++ )
 			for(Movie m : iconContentType){
 				for(String s : m.getIconContentType()) {
-				Path path = Paths.get("/home/jatin/Desktop/1/" +fileName +"/");
+				Path path = Paths.get("/home/rohan/Desktop/1/" +fileName +"/");
 				//String ext1 = FilenameUtils.getExtension("/home/jatin/Desktop/1/1.jpg"); 
 				//System.out.println(ext1);
 					img.add(new ImageDTO(Files.readAllBytes(path), s));

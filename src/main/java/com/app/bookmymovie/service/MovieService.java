@@ -37,13 +37,13 @@ public class MovieService implements IMovieService {
 		movie.setId(id);
 		return movieRepo.save(movie);
 	}
-	
+	 
 	@Override 
 	public Movie addIcon(int id, MultipartFile imageFile, int fileName) {
 		
-		File file = new File("/home/jatin/Desktop/"+id+"/");
+		File file = new File("./src/main/resources/public/"+id+"/");
 		file.mkdir();
-        String filePath = file + "/" + fileName ;
+        String filePath = file + "/" + fileName + "." + imageFile.getContentType().substring(6);
         	try {
 				Files.copy(imageFile.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 				} catch (Exception e) {
