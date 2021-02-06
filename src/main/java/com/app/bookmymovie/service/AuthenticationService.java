@@ -96,6 +96,7 @@ public class AuthenticationService implements IAuthenticationService {
 			Optional<Theatre> theatreOptional= theatreRepo.findByEmail(username);
 			if(!theatreOptional.isPresent())
 				//throw new UsernameNotFoundException("User by name " + username + " not found!");
+				return null ;
 			return theatreOptional.get();
 		}
 		//to avoid lazy init exc

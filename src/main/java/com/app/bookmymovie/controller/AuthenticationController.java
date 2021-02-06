@@ -14,13 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.bookmymovie.dto.AuthenticationRequest;
 import com.app.bookmymovie.dto.AuthenticationResponse;
+import com.app.bookmymovie.pojo.Actor;
 import com.app.bookmymovie.service.IAuthenticationService;
+import com.app.bookmymovie.util.JwtUtil;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
 public class AuthenticationController {
 	@Autowired
 	IAuthenticationService authenticationService;
+	
+	@Autowired
+	private JwtUtil utils;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> authenticateActor(@RequestBody AuthenticationRequest req) {
@@ -35,20 +40,18 @@ public class AuthenticationController {
 	@PostMapping("/password/change")
 	public ResponseEntity<?> changePassword(@RequestParam String oldPassword, @RequestParam String newPassword) {
 		System.out.println("Auth Controller : /password/change");
-	/*	boolean passwordChanged = false;
-		if (session.getAttribute("role") == null)
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		if (session.getAttribute("role").equals("user")) {
-			passwordChanged = authenticationService.changePassword((User) session.getAttribute("user"),
-					oldPassword, newPassword);
-		} else if (session.getAttribute("role").equals("TheatreAdmin")) {
-			passwordChanged = authenticationService.changePassword((Theatre) session.getAttribute("user"),
-					oldPassword, newPassword);
-		}*/
 		AuthenticationResponse resp = authenticationService.changePassword(oldPassword, newPassword);
 		if (resp == null)
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 		return new ResponseEntity<>(resp,HttpStatus.OK);
+	}
+	@PostMapping("/validate")
+	public ResponseEntity<?> getActor(@RequestParam String jwt) {
+		String userName = utils.extractUsername(jwt);
+		Actor actor = authenticationService.loadActorByUsername(userName);
+		if(actor == null)
+			return null ;
+		return new ResponseEntity<>(actor,HttpStatus.OK);
 	}
 }
