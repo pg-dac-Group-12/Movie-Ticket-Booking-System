@@ -34,11 +34,11 @@ public class ShowsController {
 	@GetMapping
 	public ResponseEntity<?> getAllShowsByMovieIdAndDate(@RequestParam int movieId, @RequestParam("date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-		
-		if(showService.getAllShowsByMovieIdAndDate(movieId,date) == null)
+		List<Shows> shows = showService.getAllShowsByMovieIdAndDate(movieId,date);
+		if(shows == null)
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-		return new ResponseEntity<>(showService.getAllShowsByMovieIdAndDate(movieId,date), HttpStatus.OK);
+		System.out.println("ShowsController " + shows.get(0).getSeatmap());
+		return new ResponseEntity<>(shows, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
@@ -104,8 +104,8 @@ public class ShowsController {
 	
 	@PutMapping("/{showId}/seatmap")
 	public ResponseEntity<?> updateSeatMap(@PathVariable int showId, @RequestBody List<Seat> seat){
-		if(!showService.updateSeatMap(showId, seat, true))
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		showService.updateSeatMap(showId, seat, true);
+			//return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<> (showService.getSeatMap(showId),HttpStatus.OK);
 		
 	}

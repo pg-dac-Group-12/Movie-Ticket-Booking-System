@@ -21,20 +21,21 @@ import com.app.bookmymovie.repository.ShowsRepository;
 @Service
 @Transactional
 public class ShowService implements IShowService {
-	
+
 	@Autowired
-	ShowsRepository showsRepo ;
-	
+	ShowsRepository showsRepo;
+
 	@Autowired
-	AudiRepository audiRepo ;
-	
+	AudiRepository audiRepo;
+
 	@Autowired
-	TicketService ticketService ;
-	
+	TicketService ticketService;
+
 	@Override
-	public List<Shows> getAllShowsByMovieIdAndDate(int id,  LocalDate date) {
-		//return showsRepo.findAllByMovieIdAndDate(id,  java.sql.Date.valueOf(date));
-		return showsRepo.findAllByMovieIdAndDate(id, date);
+	public List<Shows> getAllShowsByMovieIdAndDate(int id, LocalDate date) {
+
+		List<Shows> shows = showsRepo.findAllByMovieIdAndDate(id, date);
+		return shows;
 	}
 
 	@Override
@@ -43,10 +44,10 @@ public class ShowService implements IShowService {
 	}
 
 	@Override
-	public Shows createShow(Shows show, int theatreID, int audiID,  int movieID) {
+	public Shows createShow(Shows show, int theatreID, int audiID, int movieID) {
 		Optional<Audi> audiOptional = audiRepo.findById(audiID);
-		
-		if(!audiOptional.isPresent()) {
+
+		if (!audiOptional.isPresent()) {
 			System.out.println("Audi not found"); // for debuging purpose
 		}
 		Audi audi = audiOptional.get();
@@ -55,14 +56,16 @@ public class ShowService implements IShowService {
 		Movie movie = new Movie();
 		movie.setId(movieID);
 		show.setAudi(audi);
+		System.out.println(" ShowService.createShow-" + audi.getSeatMap());
 		show.setSeatmap(audi.getSeatMap());
+		System.out.println(" ShowService.createShow-" + show.getSeatmap());
 		show.setTheatre(theatre);
 		show.setMovie(movie);
 		return showsRepo.save(show);
 	}
 
 	@Override
-	public Shows updateShow(Shows show , int id) {
+	public Shows updateShow(Shows show, int id) {
 		show.setId(id);
 		return showsRepo.save(show);
 	}
@@ -74,12 +77,12 @@ public class ShowService implements IShowService {
 
 	@Override
 	public List<Shows> getAllShowsByTheatreId(int theatreId) {
-		
+
 		return showsRepo.findAllByTheatreId(theatreId);
 	}
-	
+
 	@Override
-	public List<Shows> getAllShowsByAudiId(int audiId) {	
+	public List<Shows> getAllShowsByAudiId(int audiId) {
 		return showsRepo.findAllShowsByAudiId(audiId);
 //		if(!showsListOptional.isPresent())
 //			return null;
@@ -89,36 +92,40 @@ public class ShowService implements IShowService {
 	@Override
 	public boolean cancelShow(int showId) {
 		Optional<Shows> optionalShow = showsRepo.findById(showId);
-		if(optionalShow.isPresent()) {
-		for(Ticket ticket : optionalShow.get().getTickets()) {
-			if(!ticketService.cancelTicket(ticket.getId()))
-				return false ;
-		}
-		showsRepo.delete(optionalShow.get());
-		return true; 
-		}else {
+		if (optionalShow.isPresent()) {
+			for (Ticket ticket : optionalShow.get().getTickets()) {
+				if (!ticketService.cancelTicket(ticket.getId()))
+					return false;
+			}
+			showsRepo.delete(optionalShow.get());
+			return true;
+		} else {
 			return false;
 		}
 	}
+
 	@Override
-	public List<Seat> getSeatMap(int id){
+	public List<Seat> getSeatMap(int id) {
 		Optional<Shows> show = showsRepo.findById(id);
-		return (show.get().getSeatmap());	 
+		System.out.println("ShowService.getSeatMap-" + show.get().getSeatmap());
+		return (show.get().getSeatmap());
 	}
-	
+
 	@Override
-	public boolean updateSeatMap(int showId, List<Seat> seat, boolean status) {
-		List<Seat> s = this.getShowById(showId).get().getSeatmap();
-		for(Seat bookedSeat : seat){
-			for(Seat seats : s) {
-				if(seats.getRowNumber() == bookedSeat.getRowNumber() && seats.getColNumber() == bookedSeat.getColNumber() ) {
-					seats.setIsBooked(status);
-					
-					return true;
-				 }
+	public void updateSeatMap(int showId, List<Seat> bookedSeats, boolean status) {
+		List<Seat> seats = this.getShowById(showId).get().getSeatmap();
+		System.out.println("updateSeatMap-1" + seats);
+		for (Seat bookedSeat : bookedSeats) {
+			for (int i = 0; i < seats.size(); i++) {
+				if ( i == (seats.size()-1) ? false : seats.get(i).getRowNumber() == seats.get(i + 1).getRowNumber()) {
+					continue;
+				}
+				if (seats.get(i).getRowNumber() == bookedSeat.getRowNumber()
+						&& seats.get(i).getColNumber() == bookedSeat.getColNumber()) {
+					seats.get(i).setIsBooked(status);
+				}
 			}
 		}
-		
-		return false;
+		System.out.println("updateSeatMap-2" + seats);
 	}
 }

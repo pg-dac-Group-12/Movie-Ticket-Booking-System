@@ -82,6 +82,7 @@ public class TheatreService implements ITheatreService {
 			return null;
 		theatre.get().addAudi(audi);
 		audi = audiRepo.save(audi);
+		System.out.println("theatreService.createAudi-"+audi.getSeatMap());
 		return audi;
 	}
 

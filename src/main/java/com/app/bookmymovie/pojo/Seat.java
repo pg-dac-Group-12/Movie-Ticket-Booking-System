@@ -3,11 +3,15 @@ package com.app.bookmymovie.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OrderColumn;
 
 import org.hibernate.annotations.Type;
 
 @Embeddable
 public class Seat implements Cloneable{ 
+
 	@Column(name = "r_number")
 	int rowNumber ;
 	@Column(name = "c_number")

@@ -76,6 +76,7 @@ public class TheatreController {
 	
 	@PostMapping("/{theatreID}/audi")
 	public ResponseEntity<?> createAudi(@PathVariable int theatreID, @RequestBody Audi audi) throws JsonMappingException, JsonProcessingException{
+		System.out.println("TheatreController.crateAUdi-"+audi.getSeatMap());
 		Audi createdAudi = theatreService.createAudi(theatreID, audi);
 		if(createdAudi == null)
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);

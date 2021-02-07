@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 
@@ -55,7 +56,7 @@ public class Shows {
 	@Embedded
 	@ElementCollection(fetch=FetchType.LAZY)
 	@CollectionTable(name = "show_seats_tbl" , joinColumns = @JoinColumn(name = "show_seats_id"))
-	
+	@OrderBy("colNumber, rowNumber")
 	private List<Seat> seatmap ;
 	public Shows() {
 		super();
