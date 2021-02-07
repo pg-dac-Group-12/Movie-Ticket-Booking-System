@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers(HttpMethod.GET,"/shows/audi/*").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
 		//antMatchers("/**").permitAll(). // if (frust == true){ uncomment}
 		antMatchers(HttpMethod.POST, "/user").permitAll().
+		antMatchers(HttpMethod.POST, "/user/").permitAll().
+		antMatchers(HttpMethod.POST, "/theatre/").permitAll().
 		antMatchers(HttpMethod.POST, "/shows").hasAnyAuthority(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.PUT, "/shows/*").hasAnyAuthority(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.POST, "/shows/cancel").hasAnyAuthority(Role.THEATRE.toString()).
@@ -75,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers(HttpMethod.GET,"/user").hasAnyAuthority(Role.USER.toString()).
 
 		//antMatchers("/**").permitAll().
-
+		antMatchers(HttpMethod.PUT,"/user/*").permitAll(). 
 		antMatchers(HttpMethod.POST,"/user").permitAll().
 		antMatchers(HttpMethod.POST,"/ticket/*").hasAnyAuthority(Role.USER.toString()).
 		antMatchers(HttpMethod.GET,"/ticket/*").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
