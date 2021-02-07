@@ -37,7 +37,6 @@ public class ShowsController {
 		List<Shows> shows = showService.getAllShowsByMovieIdAndDate(movieId,date);
 		if(shows == null)
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		System.out.println("ShowsController " + shows.get(0).getSeatmap());
 		return new ResponseEntity<>(shows, HttpStatus.OK);
 	}
 	

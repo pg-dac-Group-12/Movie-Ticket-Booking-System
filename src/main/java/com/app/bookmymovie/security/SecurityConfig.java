@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers(HttpMethod.POST,"/login/").permitAll().
 		antMatchers(HttpMethod.POST,"/ticket/cancel").hasAuthority(Role.USER.toString()).
 		antMatchers(HttpMethod.GET,"/theatre/**/audis").hasAuthority(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/shows/theatre/*").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/theatre/**").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
 		antMatchers(HttpMethod.GET,"/theatre/**/audi/*").hasAnyAuthority(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.GET,"/shows/**/seatmap").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
 		antMatchers(HttpMethod.GET,"/shows/audi/*").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
