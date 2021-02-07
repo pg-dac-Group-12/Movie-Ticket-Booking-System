@@ -38,99 +38,92 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// its required.
 		
 	
-		http.cors().and().csrf().disable().authorizeRequests().
-
-
-		/*
-		 * antMatchers("/swagger-ui.html*").permitAll().
-		 * antMatchers("/favicon.ico").permitAll().
-		 * antMatchers("/webjars/**").permitAll(). antMatchers("/api/*").permitAll().
-		 * antMatchers("/swagger-resources/*").permitAll().
-		 */
-		//We are using this now because we(I) still haven't figured out this shit yet
-		//antMatchers("/**").permitAll(). 
-		
-		//does not work. Still to be figured out.
-		antMatchers(HttpMethod.POST,"/ticket/cancel/*[0-9]").hasRole(Role.USER.toString()).
-		antMatchers(HttpMethod.GET,"/shows/theatre/*[0-9]").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/theatre/*[0-9]/audis").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/theatre/*[0-9]/audi/*").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/shows/*[0-9]/seatmap").permitAll().
-		antMatchers(HttpMethod.GET,"/shows/audi/*[0-9]").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
-		antMatchers("/**").permitAll(). // if (frust == true){ uncomment}
+		http.csrf().disable().authorizeRequests().
+		antMatchers("/images/**").permitAll().
+		antMatchers("/validate").permitAll().
+		antMatchers(HttpMethod.OPTIONS, "/**").permitAll().
+		antMatchers("/swagger-ui.html*").permitAll().
+		antMatchers("/favicon.ico").permitAll().
+		antMatchers("/webjars/**").permitAll(). antMatchers("/api/*").permitAll().
+		antMatchers("/swagger-resources/*").permitAll().
+		antMatchers(HttpMethod.POST,"/login/").permitAll().
+		antMatchers(HttpMethod.POST,"/ticket/cancel").hasAuthority(Role.USER.toString()).
+		antMatchers(HttpMethod.GET,"/theatre/**/audis").hasAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/theatre/*").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/theatre/**/audi/*").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/**/seatmap").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/audi/*").hasAnyAuthority(Role.USER.toString(), Role.THEATRE.toString()).
+		//antMatchers("/**").permitAll(). // if (frust == true){ uncomment}
 		antMatchers(HttpMethod.POST, "/user").permitAll().
-		antMatchers(HttpMethod.POST, "/shows").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.PUT, "/shows/{id}").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.POST, "/shows/cancel").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.POST, "/theatre").hasRole(Role.THEATRE.toString()).
-		antMatchers("/theatre/*").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET, "/payment/*").hasRole(Role.USER.toString()).
-		antMatchers("/ticket*").hasRole(Role.USER.toString()).
-		antMatchers(HttpMethod.POST,"/ticket/{showId}").hasRole(Role.USER.toString()).
-		antMatchers(HttpMethod.POST,"/ticket/cancel/{ticketId}").hasRole(Role.USER.toString()).
-		antMatchers("/user*").hasRole(Role.USER.toString()).
-		antMatchers(HttpMethod.GET,"/shows/audi/{audiId}").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/shows/theatre/{theatreID}").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/ticket/{id}").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST, "/shows").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.PUT, "/shows/*").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST, "/shows/cancel").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST, "/theatre").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers("/theatre/*").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET, "/payment/*").hasAnyAuthority(Role.USER.toString()).
+		antMatchers("/ticket*").hasAnyAuthority(Role.USER.toString()).
+		antMatchers(HttpMethod.POST,"/ticket/*").hasAnyAuthority(Role.USER.toString()).
+		antMatchers(HttpMethod.POST,"/ticket/cancel/*").hasAnyAuthority(Role.USER.toString()).
+		antMatchers("/user/**").hasAnyAuthority(Role.USER.toString()).
+		antMatchers(HttpMethod.GET,"/shows/audi/*").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/theatre/*").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/ticket/*").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
 		antMatchers(HttpMethod.POST,"/password/change").hasAnyRole(Role.USER.toString(), Role.THEATRE.toString()).
-		antMatchers(HttpMethod.POST, "/shows/cancel").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET, "/payment/success").hasRole(Role.USER.toString()).
-		antMatchers("/user/*[0-9]").hasRole(Role.USER.toString()).
-		antMatchers(HttpMethod.GET,"/user").hasRole(Role.USER.toString()).
+		antMatchers(HttpMethod.POST, "/shows/cancel").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST, "/payment/success/**").hasAnyAuthority(Role.USER.toString()).
+		antMatchers("/user/*[0-9]").hasAnyAuthority(Role.USER.toString()).
+		antMatchers(HttpMethod.GET,"/user").hasAnyAuthority(Role.USER.toString()).
 
-		antMatchers("/**").permitAll().
+		//antMatchers("/**").permitAll().
 
 		antMatchers(HttpMethod.POST,"/user").permitAll().
-		antMatchers(HttpMethod.POST,"/ticket/*[0-9]").hasRole(Role.USER.toString()).
-		antMatchers(HttpMethod.GET,"/ticket/*[0-9]").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST,"/ticket/*").hasAnyAuthority(Role.USER.toString()).
+		antMatchers(HttpMethod.GET,"/ticket/*").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
 		antMatchers(HttpMethod.GET,"/ticket").hasAnyRole(Role.USER.toString()).
-		antMatchers(HttpMethod.PUT, "/shows/*[0-9]").hasRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.POST, "/shows**").hasRole(Role.THEATRE.toString()).
-		antMatchers("/theatre/*[0-9]").hasRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.PUT, "/shows/*").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.POST, "/shows/*").hasAnyAuthority(Role.THEATRE.toString()).
+		antMatchers("/theatre/*").hasAnyAuthority(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.POST, "/theatre").permitAll().
-		
+//		
 		//no auth
-		antMatchers(HttpMethod.GET,"/movie/*[0-9]").permitAll().
+		antMatchers(HttpMethod.GET,"/movie/*").permitAll().
 		antMatchers(HttpMethod.GET,"/movie").permitAll().
 		antMatchers("/login").permitAll().
-
+//
 		antMatchers("/password/*").permitAll().	
 		antMatchers(HttpMethod.GET,"/shows").permitAll().
-		antMatchers(HttpMethod.GET,"/shows/{id}").permitAll().
+		antMatchers(HttpMethod.GET,"/shows/*").permitAll().
 
-		
-		//site admin shit. for now denying all
-		antMatchers(HttpMethod.POST,"/movie/upload/*[0-9]").denyAll().
-		antMatchers(HttpMethod.DELETE,"/movie/*[0-9]").denyAll().
-		antMatchers(HttpMethod.PUT,"/movie/*[0-9]").denyAll().
+//		
+//		//site admin shit. for now denying all
+		antMatchers(HttpMethod.POST,"/movie/upload/*").denyAll().
+		antMatchers(HttpMethod.DELETE,"/movie/*").denyAll().
+		antMatchers(HttpMethod.PUT,"/movie/*").denyAll().
 		antMatchers(HttpMethod.POST,"/movie").denyAll().
-		/*
-				 * allow OPTIONS call here for angular. These OPTIONS call are made by Angular
-				 * application to Spring Boot application.
-				 */
-
-
+//		/*
+//				 * allow OPTIONS call here for angular. These OPTIONS call are made by Angular
+//				 * application to Spring Boot application.
+//				 */
 		antMatchers("/password/*").permitAll().
 		antMatchers("/logoff").permitAll().
 		antMatchers(HttpMethod.GET,"/movie").permitAll().
-		antMatchers(HttpMethod.GET, "/movie/id").permitAll().
+		antMatchers(HttpMethod.GET, "/movie/*").permitAll().
 		antMatchers(HttpMethod.GET, "/shows").permitAll().
-		antMatchers(HttpMethod.GET, "/shows/id").permitAll().
+		antMatchers(HttpMethod.GET, "/shows/*").permitAll().
 		antMatchers(HttpMethod.GET, "/shows/showId/seatmap").permitAll().
-		antMatchers(HttpMethod.GET,"/shows/audi/audiID").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/shows/theatre/theatreID").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
-		antMatchers(HttpMethod.GET,"/ticket/id").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/audi/*").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/shows/theatre/*").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
+		antMatchers(HttpMethod.GET,"/ticket/*").hasAnyRole(Role.USER.toString(),Role.THEATRE.toString()).
 		antMatchers("/movie").hasAnyRole(Role.SITE.toString()).
 		antMatchers("/movie/*").hasAnyRole(Role.SITE.toString()).
 		antMatchers(HttpMethod.POST,"/shows").hasAnyRole(Role.THEATRE.toString()).
-		antMatchers(HttpMethod.PUT,"/shows/id").hasAnyRole(Role.THEATRE.toString()).
+		antMatchers(HttpMethod.PUT,"/shows/*").hasAnyRole(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.POST,"/shows/cancel").hasAnyRole(Role.THEATRE.toString()).
 		antMatchers(HttpMethod.POST,"/theatre").hasAnyRole(Role.THEATRE.toString()).
 		antMatchers("/theatre/*").hasAnyRole(Role.THEATRE.toString()).
 		antMatchers("/payment/*").hasAnyRole(Role.USER.toString()).
 		antMatchers("/ticket").hasAnyRole(Role.USER.toString()).
 		antMatchers("/ticket/*").hasAnyRole(Role.USER.toString()).	
-		antMatchers(HttpMethod.OPTIONS, "/**").permitAll().
 
 		anyRequest().authenticated().and().sessionManagement().
 		sessionCreationPolicy(SessionCreationPolicy.STATELESS);
