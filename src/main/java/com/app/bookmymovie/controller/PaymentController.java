@@ -1,7 +1,5 @@
 package com.app.bookmymovie.controller;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.bookmymovie.dto.RazorpayDTO;
 import com.app.bookmymovie.pojo.Ticket;
 import com.app.bookmymovie.service.IPaymentService;
-import com.app.bookmymovie.util.EmailUtil;
 import com.razorpay.Order;
 @RestController
 @RequestMapping("/payment")
@@ -36,11 +33,10 @@ public class PaymentController {
 	}
 	
 	@PostMapping("/success")
-	public ResponseEntity<?> paymentSuccess(@RequestBody RazorpayDTO razorpayDTO , @RequestParam int tempTicketId , @AuthenticationPrincipal String user ) throws IOException, Exception {
+	public ResponseEntity<?> paymentSuccess(@RequestBody RazorpayDTO razorpayDTO , @RequestParam int tempTicketId , @AuthenticationPrincipal String user ) {
 		Ticket ticket = paymentService.paymentSuccess(razorpayDTO, tempTicketId, user);
 		if(ticket == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		EmailUtil.sendTicketViaEmail(ticket);
 		return new ResponseEntity<>(ticket, HttpStatus.OK);
 	}
 }

@@ -14,10 +14,12 @@ import com.app.bookmymovie.pojo.Ticket;
 import com.app.bookmymovie.pojo.Transaction;
 import com.app.bookmymovie.repository.TicketRepository;
 import com.app.bookmymovie.repository.TransactionRepository;
+import com.app.bookmymovie.util.EmailUtil;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
+
 
 @Service
 @Transactional
@@ -28,7 +30,6 @@ public class PaymentService implements IPaymentService {
 
 	@Autowired
 	TicketRepository ticketRepo;
-	
 
 	@Autowired
 	HttpSession session;
@@ -55,7 +56,7 @@ public class PaymentService implements IPaymentService {
 			orderRequest.put("currency", "INR");
 			orderRequest.put("receipt", "order_rcptid_11");
 			Order order = razorpayClient.Orders.create(orderRequest);
-			
+
 			return order;
 		} catch (RazorpayException e) {
 			System.out.println(e.getMessage());
@@ -64,7 +65,7 @@ public class PaymentService implements IPaymentService {
 	}
 
 	@Override
-	public Ticket paymentSuccess(RazorpayDTO razorpayDTO , int tempTicketId , String userName ) {
+	public Ticket paymentSuccess(RazorpayDTO razorpayDTO, int tempTicketId, String userName) {
 		System.out.println(razorpayDTO);
 		JSONObject options = new JSONObject();
 		options.put("razorpay_order_id", razorpayDTO.getRazorpayOrderId());
@@ -80,13 +81,19 @@ public class PaymentService implements IPaymentService {
 		} catch (RazorpayException e) {
 			e.printStackTrace();
 		}
-		
+
 		Ticket ticket = ticketService.saveTicket(tempTicketId, userName);
 		ticket = ticketRepo.save(ticket);
 		System.out.println(ticket.toString());
 		Transaction transaction = createTransaction(razorpayDTO.getRazorpayPaymentId(), ticket);
 		ticket.setTransaction(transaction);
 		transaction = transactionRepo.save(transaction);
+		try {
+			if (ticket != null)
+				EmailUtil.sendTicketViaEmail(ticket);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return ticket;
 	}
 

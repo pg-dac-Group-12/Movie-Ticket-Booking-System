@@ -19,12 +19,12 @@ public class ScheduledTasks {
 	ITicketService ticketService ;
 	
 	
-	@Scheduled( cron = "${deleteShows.cron}")
+	@Scheduled( cron = "0 0 3 * * *")
 	public void deleteDoneShows() {
 		showService.deleteDoneShows();
 	}
 	
-	@Scheduled(cron = "${deleteMovies.cron}")
+	@Scheduled(cron = "0 0 4 * * *")
 	public void deleteUnscreenedMovies() {
 		movieService.deleteUnscreenedMovies();
 	}
